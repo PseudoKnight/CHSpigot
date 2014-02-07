@@ -216,21 +216,45 @@ public class Functions {
             World w = (World) l.getWorld().getHandle();
             Effect e = Effect.valueOf(args[1].val().toUpperCase());
             Location loc;
-            loc = new Location(w, l.getBlockX(), l.getBlockY(), l.getBlockZ());
+            loc = new Location(w, l.getX(), l.getY(), l.getZ());
             if(args.length > 2) {
                 if(!(args[2] instanceof CArray)) {
                     throw new ConfigRuntimeException("The third parameter must be an array", ExceptionType.CastException, t);
                 }
                 
                 CArray options = Static.getArray(args[2], t);
-                int id = Static.getInt32(options.get("id"), t);
-                int data = Static.getInt32(options.get("data"), t);
-                float offsetX = Static.getDouble32(options.get("offsetX"), t);
-                float offsetY = Static.getDouble32(options.get("offsetY"), t);
-                float offsetZ = Static.getDouble32(options.get("offsetZ"), t);
-                float speed = Static.getDouble32(options.get("speed"), t);
-                int particleCount = Static.getInt32(options.get("particleCount"), t);
-                int radius = Static.getInt32(options.get("radius"), t);
+                int id = 0;
+                int data = 0;
+                float offsetX = 0;
+                float offsetY = 0;
+                float offsetZ = 0;
+                float speed = 1;
+                int particleCount = 1;
+                int radius = 16;
+                if(options.containsKey("id")){
+                    id = Static.getInt32(options.get("id"), t);
+                }
+                if(options.containsKey("data")){
+                    data = Static.getInt32(options.get("data"), t);
+                }
+                if(options.containsKey("offsetX")){
+                    offsetX = Static.getDouble32(options.get("offsetX"), t);
+                }
+                if(options.containsKey("offsetY")){
+                    offsetY = Static.getDouble32(options.get("offsetY"), t);
+                }
+                if(options.containsKey("offsetZ")){
+                    offsetZ = Static.getDouble32(options.get("offsetZ"), t);
+                }
+                if(options.containsKey("speed")){
+                    speed = Static.getDouble32(options.get("speed"), t);
+                }
+                if(options.containsKey("particleCount")){
+                    particleCount = Static.getInt32(options.get("particleCount"), t);
+                }
+                if(options.containsKey("radius")){
+                    radius = Static.getInt32(options.get("radius"), t);
+                }
                 
                 w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
                 
@@ -251,7 +275,8 @@ public class Functions {
 
         public String docs() {
             return "void {locationArray, effect, [effectArray]} Plays the specified particle effect to any nearby players. "
-                    + "Effect array contains indexes: int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius";
+                    + "Effect array may contain one or more of the following indexes: "
+                    + "int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius";
         }
 
         public Version since() {
