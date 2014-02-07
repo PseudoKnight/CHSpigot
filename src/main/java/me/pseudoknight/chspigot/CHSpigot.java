@@ -9,7 +9,7 @@ import com.laytonsmith.core.extensions.MSExtension;
 public class CHSpigot extends AbstractExtension {
     
     public Version getVersion() {
-        return new SimpleVersion(1,1,0);
+        return new SimpleVersion(1,1,1);
     }
 
     @Override

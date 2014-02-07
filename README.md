@@ -39,6 +39,6 @@ WITCH_MAGIC, NOTE, PORTAL, FLYING_GLYPH, FLAME, LAVA_POP, FOOTSTEP, SPLASH, PART
 EXPLOSION_LARGE, EXPLOSION, VOID_FOG, SMALL_SMOKE, CLOUD, COLOURED_DUST, SNOWBALL_BREAK, WATERDRIP, LAVADRIP,
 SNOW_SHOVEL, SLIME, HEART, VILLAGER_THUNDERCLOUD, HAPPY_VILLAGER, ITEM_BREAK, TILE_BREAK, TILE_DUST
 
-The optional effect array contains the following indexes: 
+The optional effect array may contain one or more of the following indexes: 
 
 int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius
