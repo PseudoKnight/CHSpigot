@@ -284,5 +284,44 @@ public class Functions {
         }
         
     }
+    
+    @api
+    public static class respawn extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        }
+
+        public boolean isRestricted() {
+            return true;
+        }
+
+        public Boolean runAsync() {
+            return false; 
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            Player p = (Player) Static.GetPlayer(args[0], t).getHandle();
+            p.spigot().respawn();
+            return new CVoid(t);
+        }
+
+        public String getName() {
+            return "respawn"; 
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{1};
+        }
+
+        public String docs() {
+            return "void {player} Respawns the player immediately.";
+        }
+
+        public Version since() {
+            return CHVersion.V3_3_1;
+        }
+        
+    }
 
 }
