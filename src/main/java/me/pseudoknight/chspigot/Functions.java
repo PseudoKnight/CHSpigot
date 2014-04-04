@@ -8,12 +8,7 @@ import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
-import com.laytonsmith.core.constructs.CArray;
-import com.laytonsmith.core.constructs.CBoolean;
-import com.laytonsmith.core.constructs.CDouble;
-import com.laytonsmith.core.constructs.CVoid;
-import com.laytonsmith.core.constructs.Construct;
-import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.constructs.*;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
@@ -52,7 +47,7 @@ public class Functions {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             Player p = (Player) Static.GetPlayer(args[0], t).getHandle();                
             p.spigot().setCollidesWithEntities(Static.getBoolean(args[1]));
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -172,7 +167,7 @@ public class Functions {
             MCEntity ent = Static.getEntity(Static.getInt32(args[0], t), t);
             if(ent instanceof MCArrow) {
                 ((Arrow) ent).spigot().setDamage(Static.getDouble(args[1], t));
-                return new CVoid(t);
+                return CVoid.VOID;
             }
             
             throw new ConfigRuntimeException("The specified entity ID must be an arrow", ExceptionType.BadEntityException, t);
@@ -258,11 +253,11 @@ public class Functions {
                 
                 w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
                 
-                return new CVoid(t);
+                return CVoid.VOID;
             }
             
             w.spigot().playEffect(loc, e);
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
@@ -303,7 +298,7 @@ public class Functions {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             Player p = (Player) Static.GetPlayer(args[0], t).getHandle();
             p.spigot().respawn();
-            return new CVoid(t);
+            return CVoid.VOID;
         }
 
         public String getName() {
