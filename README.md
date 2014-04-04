@@ -42,3 +42,9 @@ SNOW_SHOVEL, SLIME, HEART, VILLAGER_THUNDERCLOUD, HAPPY_VILLAGER, ITEM_BREAK, TI
 The optional effect array may contain one or more of the following indexes: 
 
 int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius
+
+### Respawn API
+
+**respawn(playerName)**
+
+If the player is dead, it will respawn them.
