@@ -89,6 +89,11 @@
             <id>commandhelper-repo</id>
             <url>http://mvn2.sk89q.com/repo</url>
         </repository>
+        
+        <repository>
+            <id>spigot-repo</id>
+            <url>http://repo.md-5.net/</url>
+        </repository>
     
         <repository>
             <id>maven-central</id>
