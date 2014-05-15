@@ -227,28 +227,28 @@ public class Functions {
                 int particleCount = 1;
                 int radius = 16;
                 if(options.containsKey("id")){
-                    id = Static.getInt32(options.get("id"), t);
+                    id = Static.getInt32(options.get("id", t), t);
                 }
                 if(options.containsKey("data")){
-                    data = Static.getInt32(options.get("data"), t);
+                    data = Static.getInt32(options.get("data", t), t);
                 }
                 if(options.containsKey("offsetX")){
-                    offsetX = Static.getDouble32(options.get("offsetX"), t);
+                    offsetX = Static.getDouble32(options.get("offsetX", t), t);
                 }
                 if(options.containsKey("offsetY")){
-                    offsetY = Static.getDouble32(options.get("offsetY"), t);
+                    offsetY = Static.getDouble32(options.get("offsetY", t), t);
                 }
                 if(options.containsKey("offsetZ")){
-                    offsetZ = Static.getDouble32(options.get("offsetZ"), t);
+                    offsetZ = Static.getDouble32(options.get("offsetZ", t), t);
                 }
                 if(options.containsKey("speed")){
-                    speed = Static.getDouble32(options.get("speed"), t);
+                    speed = Static.getDouble32(options.get("speed", t), t);
                 }
                 if(options.containsKey("particleCount")){
-                    particleCount = Static.getInt32(options.get("particleCount"), t);
+                    particleCount = Static.getInt32(options.get("particleCount", t), t);
                 }
                 if(options.containsKey("radius")){
-                    radius = Static.getInt32(options.get("radius"), t);
+                    radius = Static.getInt32(options.get("radius", t), t);
                 }
                 
                 w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
