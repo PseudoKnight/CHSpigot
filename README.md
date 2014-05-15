@@ -8,11 +8,11 @@ so you'll need to keep the scripts that use this updated.
 
 ### Collision API
 
-**get_collides_with_entities(playerName)**
+**get_collides_with_entities([player])**
 
 Gets whether the player can collide with other entities. Returns boolean.
 
-**set_collides_with_entities(playerName, isCollideable)**
+**set_collides_with_entities([player], isCollideable)**
 
 Sets whether the player can collide with other entities.
 
@@ -45,6 +45,6 @@ int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int 
 
 ### Respawn API
 
-**respawn(playerName)**
+**respawn([player])**
 
 If the player is dead, it will respawn them.

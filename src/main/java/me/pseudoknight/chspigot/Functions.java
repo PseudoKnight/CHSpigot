@@ -4,11 +4,13 @@ import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCArrow;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.*;
+import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
@@ -17,6 +19,7 @@ import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 
@@ -45,8 +48,15 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player p = (Player) Static.GetPlayer(args[0], t).getHandle();                
-            p.spigot().setCollidesWithEntities(Static.getBoolean(args[1]));
+            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
+            boolean collides;
+            if(args.length > 1) {
+                p = Static.GetPlayer(args[0], t);
+                collides = Static.getBoolean(args[1]);
+            } else {
+                collides = Static.getBoolean(args[0]);
+            }
+            ((Player) p.getHandle()).spigot().setCollidesWithEntities(collides);
             return CVoid.VOID;
         }
 
@@ -55,11 +65,11 @@ public class Functions {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{2};
+            return new Integer[]{1, 2};
         }
 
         public String docs() {
-            return "void {playerName, isCollideable} Sets whether the player can collide with other entities.";
+            return "void {[playerName], isCollideable} Sets whether the player can collide with other entities.";
         }
 
         public Version since() {
@@ -84,8 +94,11 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player p = (Player) Static.GetPlayer(args[0], t).getHandle();         
-            return new CBoolean(p.spigot().getCollidesWithEntities(), t);
+            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
+            if(args.length > 0) {
+                p = Static.GetPlayer(args[0], t);
+            }        
+            return new CBoolean(((Player) p.getHandle()).spigot().getCollidesWithEntities(), t);
         }
 
         public String getName() {
@@ -93,11 +106,11 @@ public class Functions {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{1};
+            return new Integer[]{0, 1};
         }
 
         public String docs() {
-            return "boolean {playerName} Gets whether the player can collide with other entities.";
+            return "boolean {[playerName]} Gets whether the player can collide with other entities.";
         }
 
         public Version since() {
@@ -296,8 +309,11 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player p = (Player) Static.GetPlayer(args[0], t).getHandle();
-            p.spigot().respawn();
+            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
+            if(args.length > 0) {
+                p = Static.GetPlayer(args[0], t);
+            }
+            ((Player) p.getHandle()).spigot().respawn();
             return CVoid.VOID;
         }
 
@@ -310,7 +326,7 @@ public class Functions {
         }
 
         public String docs() {
-            return "void {player} Respawns the player immediately.";
+            return "void {[player]} Respawns the player immediately.";
         }
 
         public Version since() {
