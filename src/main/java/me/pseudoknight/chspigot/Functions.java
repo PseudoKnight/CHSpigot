@@ -1,7 +1,7 @@
 package me.pseudoknight.chspigot;
 
 import com.laytonsmith.PureUtilities.Version;
-import com.laytonsmith.abstraction.MCArrow;
+import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
@@ -98,7 +98,7 @@ public class Functions {
             if(args.length > 0) {
                 p = Static.GetPlayer(args[0], t);
             }        
-            return new CBoolean(((Player) p.getHandle()).spigot().getCollidesWithEntities(), t);
+            return CBoolean.get(((Player) p.getHandle()).spigot().getCollidesWithEntities());
         }
 
         public String getName() {
