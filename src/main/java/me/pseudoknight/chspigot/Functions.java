@@ -4,7 +4,6 @@ import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -19,9 +18,10 @@ import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+
+import java.util.Set;
 
 /**
  *
@@ -48,15 +48,16 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
+            Player.Spigot p;
             boolean collides;
-            if(args.length > 1) {
-                p = Static.GetPlayer(args[0], t);
-                collides = Static.getBoolean(args[1]);
-            } else {
+            if(args.length == 1) {
+                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
                 collides = Static.getBoolean(args[0]);
+            } else {
+                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+                collides = Static.getBoolean(args[1]);
             }
-            ((Player) p.getHandle()).spigot().setCollidesWithEntities(collides);
+            p.setCollidesWithEntities(collides);
             return CVoid.VOID;
         }
 
@@ -94,11 +95,13 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
-            if(args.length > 0) {
-                p = Static.GetPlayer(args[0], t);
-            }        
-            return CBoolean.get(((Player) p.getHandle()).spigot().getCollidesWithEntities());
+            Player.Spigot p;
+            if(args.length == 0) {
+                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+            } else {
+                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+            }
+            return CBoolean.get(p.getCollidesWithEntities());
         }
 
         public String getName() {
@@ -330,11 +333,13 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCPlayer p = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
-            if(args.length > 0) {
-                p = Static.GetPlayer(args[0], t);
+            Player.Spigot p;
+            if(args.length == 0) {
+                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+            } else {
+                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
             }
-            ((Player) p.getHandle()).spigot().respawn();
+            p.respawn();
             return CVoid.VOID;
         }
 
@@ -354,6 +359,97 @@ public class Functions {
             return CHVersion.V3_3_1;
         }
         
+    }
+
+    @api
+    public static class player_locale extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        }
+
+        public boolean isRestricted() {
+            return false;
+        }
+
+        public Boolean runAsync() {
+            return false;
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            Player.Spigot p;
+            if(args.length == 0) {
+                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+            } else {
+                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+            }
+            return new CString(p.getLocale(), t);
+        }
+
+        public String getName() {
+            return "player_locale";
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{0, 1};
+        }
+
+        public String docs() {
+            return "string {[player]} Gets the player's locale language.";
+        }
+
+        public Version since() {
+            return CHVersion.V3_3_1;
+        }
+
+    }
+
+    @api
+    public static class get_hidden_players extends AbstractFunction {
+
+        public Exceptions.ExceptionType[] thrown() {
+            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        }
+
+        public boolean isRestricted() {
+            return false;
+        }
+
+        public Boolean runAsync() {
+            return false;
+        }
+
+        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+            Player.Spigot p;
+            if(args.length == 0) {
+                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+            } else {
+                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+            }
+            Set<Player> players = p.getHiddenPlayers();
+            CArray hidden = new CArray(t);
+            for(Player pl : players) {
+                hidden.push((CString) pl);
+            }
+            return hidden;
+        }
+
+        public String getName() {
+            return "get_hidden_players";
+        }
+
+        public Integer[] numArgs() {
+            return new Integer[]{0, 1};
+        }
+
+        public String docs() {
+            return "array {[player]} Returns an array of players that the player cannot see.";
+        }
+
+        public Version since() {
+            return CHVersion.V3_3_1;
+        }
+
     }
 
 }
