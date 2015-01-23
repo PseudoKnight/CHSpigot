@@ -220,17 +220,30 @@ public class Functions {
         }
 
         public Construct  exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCLocation l = ObjectGenerator.GetGenerator().location(args[0], null, t);
-            World w = (World) l.getWorld().getHandle();
-            Effect e = Effect.valueOf(args[1].val().toUpperCase());
-            Location loc;
-            loc = new Location(w, l.getX(), l.getY(), l.getZ());
-            if(args.length > 2) {
-                if(!(args[2] instanceof CArray)) {
-                    throw new ConfigRuntimeException("The third parameter must be an array", ExceptionType.CastException, t);
+            MCLocation l;
+            Effect e;
+            CArray options = null;
+            Player p = null;
+
+            if(args[0] instanceof CArray) {
+                l = ObjectGenerator.GetGenerator().location(args[0], null, t);
+                e = Effect.valueOf(args[1].val().toUpperCase());
+                if(args.length == 3) {
+                    options = Static.getArray(args[2], t);
                 }
-                
-                CArray options = Static.getArray(args[2], t);
+            } else {
+                p = (Player) Static.GetPlayer(args[0], t).getHandle();
+                l = ObjectGenerator.GetGenerator().location(args[1], null, t);
+                e = Effect.valueOf(args[2].val().toUpperCase());
+                if(args.length == 4) {
+                    options = Static.getArray(args[3], t);
+                }
+            }
+
+            World w = (World) l.getWorld().getHandle();
+            Location loc = new Location(w, l.getX(), l.getY(), l.getZ());
+
+            if(options != null) {
                 int id = 0;
                 int data = 0;
                 float offsetX = 0;
@@ -238,7 +251,7 @@ public class Functions {
                 float offsetZ = 0;
                 float speed = 1;
                 int particleCount = 1;
-                int radius = 16;
+                int radius = 32;
                 if(options.containsKey("id")){
                     id = Static.getInt32(options.get("id", t), t);
                 }
@@ -263,13 +276,21 @@ public class Functions {
                 if(options.containsKey("radius")){
                     radius = Static.getInt32(options.get("radius", t), t);
                 }
-                
-                w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
+
+                if(p == null) {
+                    w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
+                } else {
+                    p.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
+                }
                 
                 return CVoid.VOID;
             }
-            
-            w.spigot().playEffect(loc, e);
+
+            if(p == null) {
+                w.spigot().playEffect(loc, e);
+            } else {
+                p.spigot().playEffect(loc, e, 0, 0, 0, 0, 0, 1, 1, 32);
+            }
             return CVoid.VOID;
         }
 
@@ -278,12 +299,12 @@ public class Functions {
         }
 
         public Integer[] numArgs() {
-            return new Integer[]{2,3};
+            return new Integer[]{2, 3, 4};
         }
 
         public String docs() {
-            return "void {locationArray, effect, [effectArray]} Plays the specified particle effect to any nearby players. "
-                    + "Effect array may contain one or more of the following indexes: "
+            return "void {[player], locationArray, effect, [effectArray]} Plays the specified particle effect to any"
+                    + " nearby players or specified player. Effect array may contain one or more of the following indexes: "
                     + "int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius";
         }
 
