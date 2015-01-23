@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.pseudoknight</groupId>
     <artifactId>chspigot</artifactId>
-    <version>1.2.3</version>
+    <version>1.3.0</version>
     <name>CHSpigot</name>
     <description>Gives access to methods available in Spigot but not Bukkit</description>
     
@@ -86,15 +86,15 @@
     
     <repositories>
         <repository>
-            <id>commandhelper-repo</id>
+            <id>sk89q-repo</id>
             <url>http://mvn2.sk89q.com/repo</url>
         </repository>
-        
+
         <repository>
             <id>spigot-repo</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-    
+
         <repository>
             <id>maven-central</id>
             <url>http://repo1.maven.org/maven2/</url>
@@ -106,18 +106,21 @@
             <groupId>com.sk89q</groupId>
             <artifactId>commandhelper</artifactId>
             <version>3.3.1-SNAPSHOT</version>
-            <type>jar</type>
             <exclusions>
                 <exclusion>
                     <artifactId>bukkit</artifactId>
                     <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>com.sk89q.spigot</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.7.2-R0.3-SNAPSHOT</version>
+            <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

@@ -6,7 +6,7 @@ so you'll need to keep the scripts that use this updated.
 
 ## Function Documentation
 
-### Collision API
+### Player API
 
 **get_collides_with_entities([player])**
 
@@ -15,6 +15,18 @@ Gets whether the player can collide with other entities. Returns boolean.
 **set_collides_with_entities([player], isCollideable)**
 
 Sets whether the player can collide with other entities.
+
+**respawn([player])**
+
+If the player is dead, it will respawn them.
+
+**player_locale([player])**
+
+Returns the language local for a player.
+
+**get_hidden_players([player])**
+
+Returns an array of players who cannot see the player.
 
 ### Arrow API
 
@@ -28,9 +40,9 @@ Sets the damage the specified arrow entity will do.
 
 ### Particles API
 
-**play_effect(locationArray, effect, [effectArray])**
+**play_effect([player], locationArray, effect, [effectArray])**
 
-Plays the specified particle effect to any nearby players. If you're on Spigot 1.8, make_effect() can do most of this now. I recommed that you use make_effect() where possible.
+Plays the specified particle effect to any nearby players or just the specified player, if provided. If you're on Spigot 1.8, make_effect() can do most of this now. I recommend that you use make_effect() where possible.
 
 Effect List:
 
@@ -50,9 +62,3 @@ The optional effectArray may contain one or more of the following indexes:<br/>
 
 Example:
 ```play_effect(pcursor(), PARTICLE_SMOKE, array(particleCount: 10))```
-
-### Respawn API
-
-**respawn([player])**
-
-If the player is dead, it will respawn them.
