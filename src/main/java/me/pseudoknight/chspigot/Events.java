@@ -78,24 +78,6 @@ public class Events {
         }
 
         @Override
-        public boolean isCancellable(BindableEvent e) {
-            if (e instanceof PlayerItemDamageEvent) {
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void cancel(BindableEvent e, boolean state) { // throws EventException {
-            if (e instanceof PlayerItemDamageEvent) {
-                PlayerItemDamageEvent event = (PlayerItemDamageEvent) e;
-                event.setCancelled(state);
-                return;
-            }
-            //throw new EventException("Cannot convert e to PlayerItemDamageEvent");
-        }
-
-        @Override
         public Driver driver() {
             return Driver.EXTENSION;
         }
