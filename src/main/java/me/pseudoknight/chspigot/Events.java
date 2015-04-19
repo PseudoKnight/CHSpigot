@@ -2,6 +2,10 @@ package me.pseudoknight.chspigot;
 
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.abstraction.bukkit.BukkitMCItemStack;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
+import com.laytonsmith.abstraction.events.MCPlayerEvent;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -13,6 +17,7 @@ import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.Prefilters;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
+import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import java.util.Map;
@@ -20,6 +25,44 @@ import java.util.Map;
 public class Events {
     public static String docs() {
         return "This augments CommandHelper with Spigot-specific events";
+    }
+
+    protected static class ItemDamageEvent implements MCPlayerEvent {
+        PlayerItemDamageEvent e;
+
+        public ItemDamageEvent(Event e) {
+            this.e = (PlayerItemDamageEvent) e;
+        }
+
+        public MCItemStack getItem() {
+            return new BukkitMCItemStack(e.getItem());
+        }
+
+        public int getDamage() {
+            return e.getDamage();
+        }
+
+        public void setDamage(int damage) {
+            e.setDamage(damage);
+        }
+
+        public boolean isCancelled() {
+            return e.isCancelled();
+        }
+
+        public void setCancelled(boolean cancelled) {
+            e.setCancelled(cancelled);
+        }
+
+        @Override
+        public MCPlayer getPlayer() {
+            return new BukkitMCPlayer(e.getPlayer());
+        }
+
+        @Override
+        public Object _GetObject() {
+            return e;
+        }
     }
 
     @api
@@ -42,17 +85,8 @@ public class Events {
         }
 
         @Override
-        public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
-            if (e instanceof PlayerItemDamageEvent) {
-                PlayerItemDamageEvent event = (PlayerItemDamageEvent)e;
-
-                Prefilters.match(prefilter, "item", Static.ParseItemNotation((MCItemStack)event.getItem()), Prefilters.PrefilterType.ITEM_MATCH);
-                Prefilters.match(prefilter, "player", event.getPlayer().getName(), Prefilters.PrefilterType.MACRO);
-
-                return true;
-            }
-
-            return false;
+        public Driver driver() {
+            return Driver.EXTENSION;
         }
 
         @Override
@@ -61,30 +95,13 @@ public class Events {
         }
 
         @Override
-        public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
-            if (e instanceof PlayerItemDamageEvent) {
-                PlayerItemDamageEvent event = (PlayerItemDamageEvent) e;
-                Map<String, Construct> map = evaluate_helper(e);
-
-                //Fill in the event parameters
-                map.put("player", new CString(event.getPlayer().getName(), Target.UNKNOWN));
-                map.put("item", ObjectGenerator.GetGenerator().item((MCItemStack)event.getItem(), Target.UNKNOWN));
-                map.put("damage", new CInt(event.getDamage(), Target.UNKNOWN));
-
-                return map;
-            } else {
-                throw new EventException("Cannot convert e to PlayerItemDamageEvent");
-            }
-        }
-
-        @Override
-        public Driver driver() {
-            return Driver.EXTENSION;
+        public Version since() {
+            return CHVersion.V3_3_1;
         }
 
         @Override
         public boolean modifyEvent(String key, Construct value, BindableEvent e) {
-            PlayerItemDamageEvent event = (PlayerItemDamageEvent)e;
+            ItemDamageEvent event = (ItemDamageEvent)e;
 
             if (key.equalsIgnoreCase("damage")) {
                 if (value instanceof CInt) {
@@ -99,9 +116,35 @@ public class Events {
         }
 
         @Override
-        public Version since() {
-            return CHVersion.V3_3_1;
+        public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+            if (e instanceof ItemDamageEvent) {
+                ItemDamageEvent event = (ItemDamageEvent)e;
+
+                Prefilters.match(prefilter, "item", Static.ParseItemNotation((MCItemStack)event.getItem()), Prefilters.PrefilterType.ITEM_MATCH);
+                Prefilters.match(prefilter, "player", event.getPlayer().getName(), Prefilters.PrefilterType.MACRO);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+            if (e instanceof ItemDamageEvent) {
+                ItemDamageEvent event = (ItemDamageEvent) e;
+                Map<String, Construct> map = evaluate_helper(e);
+
+                //Fill in the event parameters
+                map.put("player", new CString(event.getPlayer().getName(), Target.UNKNOWN));
+                map.put("item", ObjectGenerator.GetGenerator().item((MCItemStack)event.getItem(), Target.UNKNOWN));
+                map.put("damage", new CInt(event.getDamage(), Target.UNKNOWN));
+
+                return map;
+            }
+            throw new EventException("Cannot convert e to PlayerItemDamageEvent");
         }
 
     }
+
 }
