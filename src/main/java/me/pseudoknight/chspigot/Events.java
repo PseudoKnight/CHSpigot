@@ -76,10 +76,10 @@ public class Events {
         @Override
         public String docs() {
             return "{player: <string match> | item: <item match>} "
-                    + "This event is called when a player's item (like a tool) will take damage."
-                    + "{player: The player | item: An item array representing "
-                    + "the item being picked up | damage: the amount of durability damage "
-                    + "this item will be taking} "
+                    + "This event is called when a player's item (like a tool) will take damage. "
+                    + "Cancelling this event will prevent damage from being taken on items."
+                    + "{player: The player | item: An item array of the item being damaged |"
+                    + " damage: the amount of durability damage the item will be taking} "
                     + "{damage: change the amount of damage taken} "
                     + "{player|item|damage}";
         }
@@ -103,12 +103,9 @@ public class Events {
         public boolean modifyEvent(String key, Construct value, BindableEvent e) {
             ItemDamageEvent event = (ItemDamageEvent)e;
 
-            if (key.equalsIgnoreCase("damage")) {
-                if (value instanceof CInt) {
-                    event.setDamage(Integer.parseInt(value.val()));
-                    return true;
-                }
-
+            if (key.equalsIgnoreCase("damage") && value instanceof CInt) {
+                event.setDamage(Integer.parseInt(value.val()));
+                event.getPlayer().updateInventory();
                 return true;
             }
 
@@ -137,12 +134,19 @@ public class Events {
 
                 //Fill in the event parameters
                 map.put("player", new CString(event.getPlayer().getName(), Target.UNKNOWN));
-                map.put("item", ObjectGenerator.GetGenerator().item((MCItemStack)event.getItem(), Target.UNKNOWN));
+                map.put("item", ObjectGenerator.GetGenerator().item((MCItemStack) event.getItem(), Target.UNKNOWN));
                 map.put("damage", new CInt(event.getDamage(), Target.UNKNOWN));
 
                 return map;
             }
-            throw new EventException("Cannot convert e to PlayerItemDamageEvent");
+            throw new EventException("Cannot convert e to ItemDamageEvent");
+        }
+
+        @Override
+        public void cancel(BindableEvent o, boolean state) {
+            super.cancel(o, state);
+            ItemDamageEvent e = (ItemDamageEvent)o;
+            e.getPlayer().updateInventory();
         }
 
     }
