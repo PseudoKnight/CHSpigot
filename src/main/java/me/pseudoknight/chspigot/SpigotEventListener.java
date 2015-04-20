@@ -1,14 +1,10 @@
 package me.pseudoknight.chspigot;
 
-import com.laytonsmith.annotations.EventIdentifier;
-import com.laytonsmith.annotations.event;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 
 public class SpigotEventListener implements Listener {
