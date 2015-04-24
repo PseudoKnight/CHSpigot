@@ -62,3 +62,28 @@ The optional effectArray may contain one or more of the following indexes:<br/>
 
 Example:
 ```play_effect(pcursor(), PARTICLE_SMOKE, array(particleCount: 10))```
+
+## Event Documentation
+
+### item_damage
+
+This event is called when a player's item (like a tool) will take damage. Cancelling this event will prevent damage from being taken on items.
+
+#### Prefilters
+
+* **player:** [String Match][1]
+* **item:** [Item Match][2]
+
+#### Event Data
+
+* **player:** the player's name
+* **item:** an item array of the item being damaged
+* **damage:** the amount of durability damage the item will be taking
+
+#### Mutable Fields
+
+* **damage**
+
+
+[1]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#String_Match
+[2]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Item_Match
