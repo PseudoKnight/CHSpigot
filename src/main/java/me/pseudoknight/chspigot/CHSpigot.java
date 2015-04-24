@@ -5,7 +5,6 @@ import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.extensions.AbstractExtension;
 import com.laytonsmith.core.extensions.MSExtension;
-import org.bukkit.event.Listener;
 
 @MSExtension("CHSpigot")
 public class CHSpigot extends AbstractExtension {

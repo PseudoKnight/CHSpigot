@@ -10,7 +10,11 @@ import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
-import com.laytonsmith.core.constructs.*;
+import com.laytonsmith.core.constructs.CArray;
+import com.laytonsmith.core.constructs.CInt;
+import com.laytonsmith.core.constructs.Construct;
+import com.laytonsmith.core.constructs.CString;
+import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.events.Driver;
@@ -117,7 +121,7 @@ public class Events {
             if (e instanceof ItemDamageEvent) {
                 ItemDamageEvent event = (ItemDamageEvent)e;
 
-                Prefilters.match(prefilter, "item", Static.ParseItemNotation((MCItemStack)event.getItem()), Prefilters.PrefilterType.ITEM_MATCH);
+                Prefilters.match(prefilter, "item", Static.ParseItemNotation(event.getItem()), Prefilters.PrefilterType.ITEM_MATCH);
                 Prefilters.match(prefilter, "player", event.getPlayer().getName(), Prefilters.PrefilterType.MACRO);
 
                 return true;
@@ -132,9 +136,8 @@ public class Events {
                 ItemDamageEvent event = (ItemDamageEvent) e;
                 Map<String, Construct> map = evaluate_helper(e);
 
-                //Fill in the event parameters
                 map.put("player", new CString(event.getPlayer().getName(), Target.UNKNOWN));
-                map.put("item", ObjectGenerator.GetGenerator().item((MCItemStack) event.getItem(), Target.UNKNOWN));
+                map.put("item", ObjectGenerator.GetGenerator().item(event.getItem(), Target.UNKNOWN));
                 map.put("damage", new CInt(event.getDamage(), Target.UNKNOWN));
 
                 return map;
