@@ -13,7 +13,7 @@ public class CHSpigot extends AbstractExtension {
     public static SpigotEventListener listener;
     
     public Version getVersion() {
-        return new SimpleVersion(1,3,0);
+        return new SimpleVersion(1,4,0);
     }
 
     @Override
