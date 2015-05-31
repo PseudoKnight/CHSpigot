@@ -146,7 +146,7 @@ public class Functions {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             MCEntity ent = Static.getEntity(Static.getInt32(args[0], t), t);
             if(ent instanceof MCArrow) {
-                return new CDouble(((Arrow) ent).spigot().getDamage(), t);
+                return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
             }
             
             throw new ConfigRuntimeException("The specified entity ID must be an arrow", ExceptionType.BadEntityException, t);
@@ -188,7 +188,7 @@ public class Functions {
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
             MCEntity ent = Static.getEntity(Static.getInt32(args[0], t), t);
             if(ent instanceof MCArrow) {
-                ((Arrow) ent).spigot().setDamage(Static.getDouble(args[1], t));
+                ((Arrow) ent.getHandle()).spigot().setDamage(Static.getDouble(args[1], t));
                 return CVoid.VOID;
             }
             
