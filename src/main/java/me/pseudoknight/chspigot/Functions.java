@@ -144,7 +144,7 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCEntity ent = Static.getEntity(Static.getInt32(args[0], t), t);
+            MCEntity ent = Static.getEntity(args[0], t);
             if(ent instanceof MCArrow) {
                 return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
             }
@@ -186,7 +186,7 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCEntity ent = Static.getEntity(Static.getInt32(args[0], t), t);
+            MCEntity ent = Static.getEntity(args[0], t);
             if(ent instanceof MCArrow) {
                 ((Arrow) ent.getHandle()).spigot().setDamage(Static.getDouble(args[1], t));
                 return CVoid.VOID;
