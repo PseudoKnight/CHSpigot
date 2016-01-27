@@ -17,10 +17,13 @@ import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CREBadEntityException;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
-import com.laytonsmith.core.functions.Exceptions;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,8 +44,8 @@ public class Functions {
     @api
     public static class set_collides_with_entities extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREPlayerOfflineException.class};
         }
 
         public boolean isRestricted() {
@@ -88,8 +91,8 @@ public class Functions {
     @api
     public static class get_collides_with_entities extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREPlayerOfflineException.class};
         }
 
         public boolean isRestricted() {
@@ -131,8 +134,8 @@ public class Functions {
     @api
     public static class get_arrow_damage extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.BadEntityException, ExceptionType.CastException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREBadEntityException.class, CRECastException.class};
         }
 
         public boolean isRestricted() {
@@ -149,7 +152,7 @@ public class Functions {
                 return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
             }
             
-            throw new ConfigRuntimeException("The specified entity ID must be an arrow", ExceptionType.BadEntityException, t);
+            throw new CREBadEntityException("The specified entity ID must be an arrow", t);
         }
 
         public String getName() {
@@ -173,8 +176,8 @@ public class Functions {
     @api
     public static class set_arrow_damage extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.BadEntityException, ExceptionType.CastException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREBadEntityException.class, CRECastException.class};
         }
 
         public boolean isRestricted() {
@@ -192,7 +195,7 @@ public class Functions {
                 return CVoid.VOID;
             }
             
-            throw new ConfigRuntimeException("The specified entity ID must be an arrow", ExceptionType.BadEntityException, t);
+            throw new CREBadEntityException("The specified entity ID must be an arrow", t);
         }
 
         public String getName() {
@@ -216,8 +219,8 @@ public class Functions {
     @api
     public static class play_effect extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.FormatException, ExceptionType.CastException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREFormatException.class, CRECastException.class};
         }
 
         public boolean isRestricted() {
@@ -326,8 +329,8 @@ public class Functions {
     @api
     public static class respawn extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREPlayerOfflineException.class};
         }
 
         public boolean isRestricted() {
@@ -370,8 +373,8 @@ public class Functions {
     @api
     public static class player_locale extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREPlayerOfflineException.class};
         }
 
         public boolean isRestricted() {
@@ -413,8 +416,8 @@ public class Functions {
     @api
     public static class get_hidden_players extends AbstractFunction {
 
-        public Exceptions.ExceptionType[] thrown() {
-            return new ExceptionType[]{ExceptionType.PlayerOfflineException};
+        public Class<? extends CREThrowable>[] thrown() {
+            return new Class[]{CREPlayerOfflineException.class};
         }
 
         public boolean isRestricted() {
@@ -435,7 +438,7 @@ public class Functions {
             Set<Player> players = p.getHiddenPlayers();
             CArray hidden = new CArray(t);
             for(Player pl : players) {
-                hidden.push((CString) pl);
+                hidden.push((CString) pl, t);
             }
             return hidden;
         }
