@@ -105,7 +105,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>commandhelper</artifactId>
-            <version>3.3.1-SNAPSHOT</version>
+            <version>3.3.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>bukkit</artifactId>
