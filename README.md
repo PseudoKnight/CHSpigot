@@ -1,7 +1,7 @@
 # CHSpigot
 
-Gives access to methods available in Spigot but not Bukkit. 
-These functions are more subject to changes and deprecation than typical CH functions,
+Gives access to API available in Spigot but not Bukkit.
+These functions and events are more subject to changes and deprecation than typical CH functions,
 so you'll need to keep the scripts that use this updated.
 
 ## Function Documentation
@@ -84,6 +84,39 @@ This event is called when a player's item (like a tool) will take damage. Cancel
 
 * **damage**
 
+### entity_mount
+
+This event is called when an entity mounts another entity.
+
+#### Prefilters
+
+* **type:** [Macro Match][3]
+* **mounttype:** [Macro Match][3]
+
+#### Event Data
+
+* **type:** The type of entity that is mounting
+* **id:** The UUID of the mounting entity
+* **mounttype:** The type of entity that is mounted
+* **mountid:** The UUID of the mounted entity
+
+### entity_dismount
+
+This event is called when an entity dismounts another entity. This event cannot be cancelled.
+
+#### Prefilters
+
+* **type:** [Macro Match][3]
+* **mounttype:** [Macro Match][3]
+
+#### Event Data
+
+* **type:** The type of entity that is dismounting
+* **id:** The UUID of the dismounting entity
+* **mounttype:** The type of entity that is mounted
+* **mountid:** The UUID of the mounted entity
+
 
 [1]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#String_Match
 [2]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Item_Match
+[3]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Macro_Match
