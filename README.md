@@ -14,7 +14,7 @@ Gets whether the player can collide with other entities. Returns boolean.
 
 **set_collides_with_entities([player], isCollideable)**
 
-Sets whether the player can collide with other entities.
+Sets whether the player can collide with other entities. (Note: As of 1.9.2 this doesn't work like it once did. It no longer prevents many types of collisions due to changes in Spigot.)
 
 **respawn([player])**
 
