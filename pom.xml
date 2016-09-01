@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.pseudoknight</groupId>
     <artifactId>chspigot</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <name>CHSpigot</name>
     <description>Gives access to methods available in Spigot but not Bukkit</description>
     
@@ -132,7 +132,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.6-R0.1-SNAPSHOT</version>
+            <version>1.9.2-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

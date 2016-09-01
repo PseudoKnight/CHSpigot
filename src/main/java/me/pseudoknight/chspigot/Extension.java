@@ -10,7 +10,7 @@ import me.pseudoknight.chspigot.abstraction.spigot.SpigotListeners;
 public class Extension extends AbstractExtension {
 
 	public Version getVersion() {
-		return new SimpleVersion(1,5,0);
+		return new SimpleVersion(1,5,1);
 	}
 
 	@Override

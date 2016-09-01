@@ -1,9 +1,10 @@
 package me.pseudoknight.chspigot;
 
 import com.laytonsmith.PureUtilities.Version;
-import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.entities.MCArrow;
+import com.laytonsmith.abstraction.enums.MCVersion;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -20,6 +21,8 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREBadEntityException;
 import com.laytonsmith.core.exceptions.CRE.CRECastException;
 import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
+import com.laytonsmith.core.exceptions.CRE.CRELengthException;
 import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
@@ -28,6 +31,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -45,7 +49,8 @@ public class Functions {
     public static class set_collides_with_entities extends AbstractFunction {
 
         public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class};
+            return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
+                    CREIllegalArgumentException.class};
         }
 
         public boolean isRestricted() {
@@ -57,16 +62,32 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player.Spigot p;
-            boolean collides;
-            if(args.length == 1) {
-                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-                collides = Static.getBoolean(args[0]);
+            if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
+                Player.Spigot p;
+                boolean collides;
+                if(args.length == 1){
+                    p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+                    collides = Static.getBoolean(args[0]);
+                } else {
+                    p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+                    collides = Static.getBoolean(args[1]);
+                }
+                p.setCollidesWithEntities(collides);
             } else {
-                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-                collides = Static.getBoolean(args[1]);
+                LivingEntity entity;
+                boolean collides;
+                if(args.length == 1){
+                    entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
+                    collides = Static.getBoolean(args[0]);
+                } else if(args[0].val().length() > 16){
+                    entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
+                    collides = Static.getBoolean(args[1]);
+                } else {
+                    entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
+                    collides = Static.getBoolean(args[1]);
+                }
+                entity.setCollidable(collides);
             }
-            p.setCollidesWithEntities(collides);
             return CVoid.VOID;
         }
 
@@ -92,7 +113,8 @@ public class Functions {
     public static class get_collides_with_entities extends AbstractFunction {
 
         public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class};
+            return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
+                    CREIllegalArgumentException.class};
         }
 
         public boolean isRestricted() {
@@ -104,13 +126,25 @@ public class Functions {
         }
 
         public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player.Spigot p;
-            if(args.length == 0) {
-                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+            if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
+                Player.Spigot p;
+                if(args.length == 0){
+                    p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+                } else {
+                    p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+                }
+                return CBoolean.get(p.getCollidesWithEntities());
             } else {
-                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+                LivingEntity entity;
+                if(args.length == 0){
+                    entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
+                } else if(args[0].val().length() > 16){
+                    entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
+                } else {
+                    entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
+                }
+                return CBoolean.get(entity.isCollidable());
             }
-            return CBoolean.get(p.getCollidesWithEntities());
         }
 
         public String getName() {
