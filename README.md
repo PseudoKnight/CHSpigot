@@ -8,13 +8,15 @@ so you'll need to keep the scripts that use this updated.
 
 ### Player API
 
-**get_collides_with_entities([player])**
+**get_collides_with_entities([player|livingentity])**
 
-Gets whether the player can collide with other entities. Returns boolean.
+Gets whether the living entity can collide with other entities. Accepts either a player name or a UUID. Returns boolean.
 
-**set_collides_with_entities([player], isCollideable)**
+**set_collides_with_entities([player|livingentity], isCollideable)**
 
-Sets whether the player can collide with other entities. (Note: As of 1.9.2 this doesn't work like it once did. It no longer prevents many types of collisions due to changes in Spigot.)
+Sets whether the living entity can collide with other entities. 
+
+As of 1.9.2 this was changed in Spigot. It no longer prevents many types of collisions (eg. xp orbs). Also, you must set both the player and the other living entity to non-collidable to prevent collisions between them. But this also means that as of 1.9.2 you can set other living entities as non-collidable by specifying their UUID.
 
 **respawn([player])**
 
