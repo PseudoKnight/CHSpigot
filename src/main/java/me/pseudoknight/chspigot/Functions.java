@@ -273,14 +273,22 @@ public class Functions {
 
             if(args[0] instanceof CArray) {
                 l = ObjectGenerator.GetGenerator().location(args[0], null, t);
-                e = Effect.valueOf(args[1].val().toUpperCase());
+                try {
+                    e = Effect.valueOf(args[1].val().toUpperCase());
+                } catch(IllegalArgumentException ex) {
+                    throw new CREFormatException("Unknown effect name: " + args[1].val(), t);
+                }
                 if(args.length == 3) {
                     options = Static.getArray(args[2], t);
                 }
             } else {
                 p = (Player) Static.GetPlayer(args[0], t).getHandle();
                 l = ObjectGenerator.GetGenerator().location(args[1], null, t);
-                e = Effect.valueOf(args[2].val().toUpperCase());
+                try {
+                    e = Effect.valueOf(args[2].val().toUpperCase());
+                } catch(IllegalArgumentException ex) {
+                    throw new CREFormatException("Unknown effect name: " + args[2].val(), t);
+                }
                 if(args.length == 4) {
                     options = Static.getArray(args[3], t);
                 }
