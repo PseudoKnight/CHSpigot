@@ -41,466 +41,466 @@ import java.util.Set;
  * @author PseudoKnight
  */
 public class Functions {
-    public static String docs() {
-        return "These functions provide a methodscript interface for Spigot specific methods.";
-    }
+	public static String docs() {
+		return "These functions provide a methodscript interface for Spigot specific methods.";
+	}
  
-    @api
-    public static class set_collides_with_entities extends AbstractFunction {
+	@api
+	public static class set_collides_with_entities extends AbstractFunction {
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
-                    CREIllegalArgumentException.class};
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
+					CREIllegalArgumentException.class};
+		}
 
-        public boolean isRestricted() {
-            return true;
-        }
+		public boolean isRestricted() {
+			return true;
+		}
 
-        public Boolean runAsync() {
-            return false; 
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
-                Player.Spigot p;
-                boolean collides;
-                if(args.length == 1){
-                    p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-                    collides = Static.getBoolean(args[0]);
-                } else {
-                    p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-                    collides = Static.getBoolean(args[1]);
-                }
-                p.setCollidesWithEntities(collides);
-            } else {
-                LivingEntity entity;
-                boolean collides;
-                if(args.length == 1){
-                    entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
-                    collides = Static.getBoolean(args[0]);
-                } else if(args[0].val().length() > 16){
-                    entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
-                    collides = Static.getBoolean(args[1]);
-                } else {
-                    entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
-                    collides = Static.getBoolean(args[1]);
-                }
-                entity.setCollidable(collides);
-            }
-            return CVoid.VOID;
-        }
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
+				Player.Spigot p;
+				boolean collides;
+				if(args.length == 1){
+					p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+					collides = Static.getBoolean(args[0]);
+				} else {
+					p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+					collides = Static.getBoolean(args[1]);
+				}
+				p.setCollidesWithEntities(collides);
+			} else {
+				LivingEntity entity;
+				boolean collides;
+				if(args.length == 1){
+					entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
+					collides = Static.getBoolean(args[0]);
+				} else if(args[0].val().length() > 16){
+					entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
+					collides = Static.getBoolean(args[1]);
+				} else {
+					entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
+					collides = Static.getBoolean(args[1]);
+				}
+				entity.setCollidable(collides);
+			}
+			return CVoid.VOID;
+		}
 
-        public String getName() {
-            return "set_collides_with_entities"; 
-        }
+		public String getName() {
+			return "set_collides_with_entities";
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{1, 2};
-        }
+		public Integer[] numArgs() {
+			return new Integer[]{1, 2};
+		}
 
-        public String docs() {
-            return "void {[playerName], isCollideable} Sets whether the player can collide with other entities.";
-        }
+		public String docs() {
+			return "void {[playerName], isCollideable} Sets whether the player can collide with other entities.";
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
-    
-    @api
-    public static class get_collides_with_entities extends AbstractFunction {
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
-                    CREIllegalArgumentException.class};
-        }
+	}
 
-        public boolean isRestricted() {
-            return true;
-        }
+	@api
+	public static class get_collides_with_entities extends AbstractFunction {
 
-        public Boolean runAsync() {
-            return false; 
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREPlayerOfflineException.class,CREBadEntityException.class,CRELengthException.class,
+					CREIllegalArgumentException.class};
+		}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
-                Player.Spigot p;
-                if(args.length == 0){
-                    p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-                } else {
-                    p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-                }
-                return CBoolean.get(p.getCollidesWithEntities());
-            } else {
-                LivingEntity entity;
-                if(args.length == 0){
-                    entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
-                } else if(args[0].val().length() > 16){
-                    entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
-                } else {
-                    entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
-                }
-                return CBoolean.get(entity.isCollidable());
-            }
-        }
+		public boolean isRestricted() {
+			return true;
+		}
 
-        public String getName() {
-            return "get_collides_with_entities"; 
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{0, 1};
-        }
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			if(Static.getServer().getMinecraftVersion().lt(MCVersion.MC1_9_X)){
+				Player.Spigot p;
+				if(args.length == 0){
+					p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+				} else {
+					p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+				}
+				return CBoolean.get(p.getCollidesWithEntities());
+			} else {
+				LivingEntity entity;
+				if(args.length == 0){
+					entity = (LivingEntity) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
+				} else if(args[0].val().length() > 16){
+					entity = (LivingEntity) Static.getLivingEntity(args[0], t).getHandle();
+				} else {
+					entity = (LivingEntity) Static.GetPlayer(args[0], t).getHandle();
+				}
+				return CBoolean.get(entity.isCollidable());
+			}
+		}
 
-        public String docs() {
-            return "boolean {[playerName]} Gets whether the player can collide with other entities.";
-        }
+		public String getName() {
+			return "get_collides_with_entities";
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
-    
-    @api
-    public static class get_arrow_damage extends AbstractFunction {
+		public Integer[] numArgs() {
+			return new Integer[]{0, 1};
+		}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREBadEntityException.class, CRECastException.class};
-        }
+		public String docs() {
+			return "boolean {[playerName]} Gets whether the player can collide with other entities.";
+		}
 
-        public boolean isRestricted() {
-            return true;
-        }
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public Boolean runAsync() {
-            return false; 
-        }
+	}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCEntity ent = Static.getEntity(args[0], t);
-            if(ent instanceof MCArrow) {
-                return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
-            }
-            
-            throw new CREBadEntityException("The specified entity ID must be an arrow", t);
-        }
+	@api
+	public static class get_arrow_damage extends AbstractFunction {
 
-        public String getName() {
-            return "get_arrow_damage"; 
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREBadEntityException.class, CRECastException.class};
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{1};
-        }
+		public boolean isRestricted() {
+			return true;
+		}
 
-        public String docs() {
-            return "double {entityID} Gets the damage for the specified arrow entityID.";
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
-    
-    @api
-    public static class set_arrow_damage extends AbstractFunction {
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCEntity ent = Static.getEntity(args[0], t);
+			if(ent instanceof MCArrow) {
+				return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
+			}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREBadEntityException.class, CRECastException.class};
-        }
+			throw new CREBadEntityException("The specified entity ID must be an arrow", t);
+		}
 
-        public boolean isRestricted() {
-            return true;
-        }
+		public String getName() {
+			return "get_arrow_damage";
+		}
 
-        public Boolean runAsync() {
-            return false; 
-        }
+		public Integer[] numArgs() {
+			return new Integer[]{1};
+		}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCEntity ent = Static.getEntity(args[0], t);
-            if(ent instanceof MCArrow) {
-                ((Arrow) ent.getHandle()).spigot().setDamage(Static.getDouble(args[1], t));
-                return CVoid.VOID;
-            }
-            
-            throw new CREBadEntityException("The specified entity ID must be an arrow", t);
-        }
+		public String docs() {
+			return "double {entityID} Gets the damage for the specified arrow entityID.";
+		}
 
-        public String getName() {
-            return "set_arrow_damage"; 
-        }
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{2};
-        }
+	}
 
-        public String docs() {
-            return "void {entityID, double} Sets the damage the specified arrow entity will do.";
-        }
+	@api
+	public static class set_arrow_damage extends AbstractFunction {
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREBadEntityException.class, CRECastException.class};
+		}
+
+		public boolean isRestricted() {
+			return true;
+		}
+
+		public Boolean runAsync() {
+			return false;
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCEntity ent = Static.getEntity(args[0], t);
+			if(ent instanceof MCArrow) {
+				((Arrow) ent.getHandle()).spigot().setDamage(Static.getDouble(args[1], t));
+				return CVoid.VOID;
+			}
+
+			throw new CREBadEntityException("The specified entity ID must be an arrow", t);
+		}
+
+		public String getName() {
+			return "set_arrow_damage";
+		}
+
+		public Integer[] numArgs() {
+			return new Integer[]{2};
+		}
+
+		public String docs() {
+			return "void {entityID, double} Sets the damage the specified arrow entity will do.";
+		}
+
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
+
+	}
  
-    @api
-    public static class play_effect extends AbstractFunction {
+	@api
+	public static class play_effect extends AbstractFunction {
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREFormatException.class, CRECastException.class};
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREFormatException.class, CRECastException.class};
+		}
 
-        public boolean isRestricted() {
-            return true;
-        }
+		public boolean isRestricted() {
+			return true;
+		}
 
-        public Boolean runAsync() {
-            return false; 
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Construct  exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            MCLocation l;
-            Effect e;
-            CArray options = null;
-            Player p = null;
+		public Construct  exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCLocation l;
+			Effect e;
+			CArray options = null;
+			Player p = null;
 
-            if(args[0] instanceof CArray) {
-                l = ObjectGenerator.GetGenerator().location(args[0], null, t);
-                try {
-                    e = Effect.valueOf(args[1].val().toUpperCase());
-                } catch(IllegalArgumentException ex) {
-                    throw new CREFormatException("Unknown effect name: " + args[1].val(), t);
-                }
-                if(args.length == 3) {
-                    options = Static.getArray(args[2], t);
-                }
-            } else {
-                p = (Player) Static.GetPlayer(args[0], t).getHandle();
-                l = ObjectGenerator.GetGenerator().location(args[1], null, t);
-                try {
-                    e = Effect.valueOf(args[2].val().toUpperCase());
-                } catch(IllegalArgumentException ex) {
-                    throw new CREFormatException("Unknown effect name: " + args[2].val(), t);
-                }
-                if(args.length == 4) {
-                    options = Static.getArray(args[3], t);
-                }
-            }
+			if(args[0] instanceof CArray) {
+				l = ObjectGenerator.GetGenerator().location(args[0], null, t);
+				try {
+					e = Effect.valueOf(args[1].val().toUpperCase());
+				} catch(IllegalArgumentException ex) {
+					throw new CREFormatException("Unknown effect name: " + args[1].val(), t);
+				}
+				if(args.length == 3) {
+					options = Static.getArray(args[2], t);
+				}
+			} else {
+				p = (Player) Static.GetPlayer(args[0], t).getHandle();
+				l = ObjectGenerator.GetGenerator().location(args[1], null, t);
+				try {
+					e = Effect.valueOf(args[2].val().toUpperCase());
+				} catch(IllegalArgumentException ex) {
+					throw new CREFormatException("Unknown effect name: " + args[2].val(), t);
+				}
+				if(args.length == 4) {
+					options = Static.getArray(args[3], t);
+				}
+			}
 
-            World w = (World) l.getWorld().getHandle();
-            Location loc = new Location(w, l.getX(), l.getY(), l.getZ());
+			World w = (World) l.getWorld().getHandle();
+			Location loc = new Location(w, l.getX(), l.getY(), l.getZ());
 
-            if(options != null) {
-                int id = 0;
-                int data = 0;
-                float offsetX = 0;
-                float offsetY = 0;
-                float offsetZ = 0;
-                float speed = 1;
-                int particleCount = 1;
-                int radius = 32;
-                if(options.containsKey("id")){
-                    id = Static.getInt32(options.get("id", t), t);
-                }
-                if(options.containsKey("data")){
-                    data = Static.getInt32(options.get("data", t), t);
-                }
-                if(options.containsKey("offsetX")){
-                    offsetX = Static.getDouble32(options.get("offsetX", t), t);
-                }
-                if(options.containsKey("offsetY")){
-                    offsetY = Static.getDouble32(options.get("offsetY", t), t);
-                }
-                if(options.containsKey("offsetZ")){
-                    offsetZ = Static.getDouble32(options.get("offsetZ", t), t);
-                }
-                if(options.containsKey("speed")){
-                    speed = Static.getDouble32(options.get("speed", t), t);
-                }
-                if(options.containsKey("particleCount")){
-                    particleCount = Static.getInt32(options.get("particleCount", t), t);
-                }
-                if(options.containsKey("radius")){
-                    radius = Static.getInt32(options.get("radius", t), t);
-                }
+			if(options != null) {
+				int id = 0;
+				int data = 0;
+				float offsetX = 0;
+				float offsetY = 0;
+				float offsetZ = 0;
+				float speed = 1;
+				int particleCount = 1;
+				int radius = 32;
+				if(options.containsKey("id")){
+					id = Static.getInt32(options.get("id", t), t);
+				}
+				if(options.containsKey("data")){
+					data = Static.getInt32(options.get("data", t), t);
+				}
+				if(options.containsKey("offsetX")){
+					offsetX = Static.getDouble32(options.get("offsetX", t), t);
+				}
+				if(options.containsKey("offsetY")){
+					offsetY = Static.getDouble32(options.get("offsetY", t), t);
+				}
+				if(options.containsKey("offsetZ")){
+					offsetZ = Static.getDouble32(options.get("offsetZ", t), t);
+				}
+				if(options.containsKey("speed")){
+					speed = Static.getDouble32(options.get("speed", t), t);
+				}
+				if(options.containsKey("particleCount")){
+					particleCount = Static.getInt32(options.get("particleCount", t), t);
+				}
+				if(options.containsKey("radius")){
+					radius = Static.getInt32(options.get("radius", t), t);
+				}
 
-                if(p == null) {
-                    w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
-                } else {
-                    p.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
-                }
-                
-                return CVoid.VOID;
-            }
+				if(p == null) {
+					w.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
+				} else {
+					p.spigot().playEffect(loc, e, id, data, offsetX, offsetY, offsetZ, speed, particleCount, radius);
+				}
 
-            if(p == null) {
-                w.spigot().playEffect(loc, e);
-            } else {
-                p.spigot().playEffect(loc, e, 0, 0, 0, 0, 0, 1, 1, 32);
-            }
-            return CVoid.VOID;
-        }
+				return CVoid.VOID;
+			}
 
-        public String getName() {
-            return "play_effect"; 
-        }
+			if(p == null) {
+				w.spigot().playEffect(loc, e);
+			} else {
+				p.spigot().playEffect(loc, e, 0, 0, 0, 0, 0, 1, 1, 32);
+			}
+			return CVoid.VOID;
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{2, 3, 4};
-        }
+		public String getName() {
+			return "play_effect";
+		}
 
-        public String docs() {
-            return "void {[player], locationArray, effect, [effectArray]} Plays the specified particle effect to any"
-                    + " nearby players or specified player. Effect array may contain one or more of the following indexes: "
-                    + "int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius";
-        }
+		public Integer[] numArgs() {
+			return new Integer[]{2, 3, 4};
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
-    
-    @api
-    public static class respawn extends AbstractFunction {
+		public String docs() {
+			return "void {[player], locationArray, effect, [effectArray]} Plays the specified particle effect to any"
+					+ " nearby players or specified player. Effect array may contain one or more of the following indexes: "
+					+ "int id, int data, float offsetX, float offsetY, float offsetZ, float speed, int particleCount, int radius";
+		}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class};
-        }
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public boolean isRestricted() {
-            return true;
-        }
+	}
 
-        public Boolean runAsync() {
-            return false; 
-        }
+	@api
+	public static class respawn extends AbstractFunction {
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player.Spigot p;
-            if(args.length == 0) {
-                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-            } else {
-                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-            }
-            p.respawn();
-            return CVoid.VOID;
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREPlayerOfflineException.class};
+		}
 
-        public String getName() {
-            return "respawn"; 
-        }
+		public boolean isRestricted() {
+			return true;
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{0, 1};
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public String docs() {
-            return "void {[player]} Respawns the player immediately.";
-        }
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			Player.Spigot p;
+			if(args.length == 0) {
+				p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+			} else {
+				p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+			}
+			p.respawn();
+			return CVoid.VOID;
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
-        
-    }
+		public String getName() {
+			return "respawn";
+		}
 
-    @api
-    public static class player_locale extends AbstractFunction {
+		public Integer[] numArgs() {
+			return new Integer[]{0, 1};
+		}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class};
-        }
+		public String docs() {
+			return "void {[player]} Respawns the player immediately.";
+		}
 
-        public boolean isRestricted() {
-            return false;
-        }
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public Boolean runAsync() {
-            return false;
-        }
+	}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player.Spigot p;
-            if(args.length == 0) {
-                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-            } else {
-                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-            }
-            return new CString(p.getLocale(), t);
-        }
+	@api
+	public static class player_locale extends AbstractFunction {
 
-        public String getName() {
-            return "player_locale";
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREPlayerOfflineException.class};
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{0, 1};
-        }
+		public boolean isRestricted() {
+			return false;
+		}
 
-        public String docs() {
-            return "string {[player]} Gets the player's locale language.";
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			Player.Spigot p;
+			if(args.length == 0) {
+				p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+			} else {
+				p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+			}
+			return new CString(p.getLocale(), t);
+		}
 
-    }
+		public String getName() {
+			return "player_locale";
+		}
 
-    @api
-    public static class get_hidden_players extends AbstractFunction {
+		public Integer[] numArgs() {
+			return new Integer[]{0, 1};
+		}
 
-        public Class<? extends CREThrowable>[] thrown() {
-            return new Class[]{CREPlayerOfflineException.class};
-        }
+		public String docs() {
+			return "string {[player]} Gets the player's locale language.";
+		}
 
-        public boolean isRestricted() {
-            return false;
-        }
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
 
-        public Boolean runAsync() {
-            return false;
-        }
+	}
 
-        public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-            Player.Spigot p;
-            if(args.length == 0) {
-                p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
-            } else {
-                p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
-            }
-            Set<Player> players = p.getHiddenPlayers();
-            CArray hidden = new CArray(t);
-            for(Player pl : players) {
-                hidden.push((CString) pl, t);
-            }
-            return hidden;
-        }
+	@api
+	public static class get_hidden_players extends AbstractFunction {
 
-        public String getName() {
-            return "get_hidden_players";
-        }
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREPlayerOfflineException.class};
+		}
 
-        public Integer[] numArgs() {
-            return new Integer[]{0, 1};
-        }
+		public boolean isRestricted() {
+			return false;
+		}
 
-        public String docs() {
-            return "array {[player]} Returns an array of players that the player cannot see.";
-        }
+		public Boolean runAsync() {
+			return false;
+		}
 
-        public Version since() {
-            return CHVersion.V3_3_1;
-        }
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			Player.Spigot p;
+			if(args.length == 0) {
+				p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
+			} else {
+				p = ((Player) Static.GetPlayer(args[0], t).getHandle()).spigot();
+			}
+			Set<Player> players = p.getHiddenPlayers();
+			CArray hidden = new CArray(t);
+			for(Player pl : players) {
+				hidden.push((CString) pl, t);
+			}
+			return hidden;
+		}
 
-    }
+		public String getName() {
+			return "get_hidden_players";
+		}
+
+		public Integer[] numArgs() {
+			return new Integer[]{0, 1};
+		}
+
+		public String docs() {
+			return "array {[player]} Returns an array of players that the player cannot see.";
+		}
+
+		public Version since() {
+			return CHVersion.V3_3_1;
+		}
+
+	}
 
 }

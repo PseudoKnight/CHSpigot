@@ -5,7 +5,7 @@ import com.laytonsmith.core.events.BindableEvent;
 
 public interface MCEntityDismountEvent extends BindableEvent {
 
-	public MCEntity getEntity();
-	public MCEntity getDismounted();
+	MCEntity getEntity();
+	MCEntity getDismounted();
 
 }
