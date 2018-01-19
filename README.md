@@ -44,7 +44,7 @@ Sets the damage the specified arrow entity will do.
 
 **play_effect([player], locationArray, effect, [effectArray])**
 
-Plays the specified particle effect to any nearby players or just the specified player, if provided. If you're on Spigot 1.8, make_effect() can do most of this now. I recommend that you use make_effect() where possible.
+Plays the specified particle effect to any nearby players or just the specified player, if provided.
 
 Effect List:
 
