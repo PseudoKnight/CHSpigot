@@ -1,6 +1,7 @@
 package me.pseudoknight.chspigot;
 
 import com.laytonsmith.PureUtilities.Version;
+import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -10,8 +11,10 @@ import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
+import com.laytonsmith.core.events.BoundEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.Prefilters;
 import com.laytonsmith.core.exceptions.EventException;
@@ -320,6 +323,23 @@ public class Events {
 		@Override
 		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
 			return false;
+		}
+
+		@Override
+		public void preExecution(Environment env, BoundEvent.ActiveEvent activeEvent) {
+			if(activeEvent.getUnderlyingEvent() instanceof MCSpawnerSpawnEvent) {
+				// Entity object isn't in the world yet, so we need to inject it to make it accessible to functions
+				MCEntity entity = ((MCSpawnerSpawnEvent) activeEvent.getUnderlyingEvent()).getEntity();
+				Static.InjectEntity(entity);
+			}
+		}
+
+		@Override
+		public void postExecution(Environment env, BoundEvent.ActiveEvent activeEvent) {
+			if(activeEvent.getUnderlyingEvent() instanceof MCSpawnerSpawnEvent) {
+				MCEntity entity = ((MCSpawnerSpawnEvent) activeEvent.getUnderlyingEvent()).getEntity();
+				Static.UninjectEntity(entity);
+			}
 		}
 	}
 
