@@ -1,17 +1,23 @@
 package me.pseudoknight.chspigot.abstraction.spigot;
 
 import com.laytonsmith.abstraction.Implementation;
+import com.laytonsmith.abstraction.MCCreatureSpawner;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCItemStack;
+import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.abstraction.bukkit.BukkitMCCreatureSpawner;
 import com.laytonsmith.abstraction.bukkit.BukkitMCItemStack;
+import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
 import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
 import com.laytonsmith.annotations.abstraction;
 import me.pseudoknight.chspigot.abstraction.MCEntityDismountEvent;
 import me.pseudoknight.chspigot.abstraction.MCEntityMountEvent;
 import me.pseudoknight.chspigot.abstraction.MCPlayerItemDamageEvent;
+import me.pseudoknight.chspigot.abstraction.MCSpawnerSpawnEvent;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
@@ -92,6 +98,36 @@ public class SpigotEvents {
 		@Override
 		public MCEntity getDismounted() {
 			return new BukkitMCEntity(e.getDismounted());
+		}
+
+		@Override
+		public Object _GetObject() {
+			return e;
+		}
+
+	}
+
+	@abstraction(type = Implementation.Type.BUKKIT)
+	public static class SpigotSpawnerSpawnEvent implements MCSpawnerSpawnEvent {
+		SpawnerSpawnEvent e;
+
+		public SpigotSpawnerSpawnEvent(Event e) {
+			this.e = (SpawnerSpawnEvent) e;
+		}
+
+		@Override
+		public MCEntity getEntity() {
+			return new BukkitMCEntity(e.getEntity());
+		}
+
+		@Override
+		public MCCreatureSpawner getSpawner() {
+			return new BukkitMCCreatureSpawner(e.getSpawner());
+		}
+
+		@Override
+		public MCLocation getLocation() {
+			return new BukkitMCLocation(e.getLocation());
 		}
 
 		@Override

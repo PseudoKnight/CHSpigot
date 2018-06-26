@@ -19,6 +19,7 @@ import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
 import me.pseudoknight.chspigot.abstraction.MCEntityDismountEvent;
 import me.pseudoknight.chspigot.abstraction.MCEntityMountEvent;
 import me.pseudoknight.chspigot.abstraction.MCPlayerItemDamageEvent;
+import me.pseudoknight.chspigot.abstraction.MCSpawnerSpawnEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -243,6 +244,77 @@ public class Events {
 				return map;
 			}
 			throw new EventException("Cannot convert e to MCEntityDismountEvent");
+		}
+
+		@Override
+		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
+			return false;
+		}
+	}
+
+	@api
+	public static class spawner_spawn extends AbstractEvent {
+
+		@Override
+		public String getName() {
+			return "spawner_spawn";
+		}
+
+		@Override
+		public String docs() {
+			return "{type: <string match>} "
+					+ "This event is called when a spawner spawns an entity."
+					+ "{type: The type of entity that is spawning | id: The UUID of the spawning entity"
+					+ " | spawner: The location of the spawner that spawned the entity"
+					+ " | location: The location the entity spawned} "
+					+ "{}"
+					+ "{}";
+		}
+
+		@Override
+		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+			if (e instanceof MCSpawnerSpawnEvent) {
+				MCSpawnerSpawnEvent event = (MCSpawnerSpawnEvent)e;
+				if(prefilter.containsKey("type")) {
+					if(!prefilter.get("type").val().equals(event.getEntity().getType().name())) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+			if (e instanceof MCSpawnerSpawnEvent) {
+				MCSpawnerSpawnEvent event = (MCSpawnerSpawnEvent) e;
+				Map<String, Construct> map = new HashMap<>();
+				Target t = Target.UNKNOWN;
+
+				map.put("type", new CString(event.getEntity().getType().name(),t));
+				map.put("id", new CString(event.getEntity().getUniqueId().toString(), t));
+				map.put("location", ObjectGenerator.GetGenerator().location(event.getLocation(), false));
+				map.put("spawner", ObjectGenerator.GetGenerator().location(event.getSpawner().getLocation(), false));
+
+				return map;
+			}
+			throw new EventException("Cannot convert e to MCSpawnerSpawnEvent");
+		}
+
+		@Override
+		public Driver driver() {
+			return Driver.EXTENSION;
+		}
+
+		@Override
+		public BindableEvent convert(CArray manualObject, Target t) {
+			return null;
+		}
+
+		@Override
+		public Version since() {
+			return CHVersion.V3_3_2;
 		}
 
 		@Override
