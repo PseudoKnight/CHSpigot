@@ -118,6 +118,21 @@ This event is called when an entity dismounts another entity. This event cannot 
 * **mounttype:** The type of entity that is mounted
 * **mountid:** The UUID of the mounted entity
 
+### spawner_spawn
+
+This event is called when a spawner spawns an entity.
+
+#### Prefilters
+
+* **type:** [String Match][1]
+
+#### Event Data
+
+* **type:** The type of entity that is spawning
+* **id:** The UUID of the spawning entity
+* **location:** The location the entity spawned
+* **spawner:** The location of the spawner that spawned the entity
+
 
 [1]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#String_Match
 [2]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Item_Match
