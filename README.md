@@ -8,16 +8,6 @@ so you'll need to keep the scripts that use this updated.
 
 ### Player API
 
-**get_collides_with_entities([player|livingentity])**
-
-Gets whether the living entity can collide with other entities. Accepts either a player name or a UUID. Returns boolean.
-
-**set_collides_with_entities([player|livingentity], isCollideable)**
-
-Sets whether the living entity can collide with other entities. 
-
-As of 1.9.2 this was changed in Spigot. It no longer prevents many types of collisions (eg. xp orbs). Also, you must set both the player and the other living entity to non-collidable to prevent collisions between them. But this also means that as of 1.9.2 you can set other living entities as non-collidable by specifying their UUID.
-
 **respawn([player])**
 
 If the player is dead, it will respawn them.
@@ -40,31 +30,6 @@ Gets the damage for the specified arrow entityID. Returns double.
 
 Sets the damage the specified arrow entity will do.
 
-### Particles API
-
-**play_effect([player], locationArray, effect, [effectArray])**
-
-Plays the specified particle effect to any nearby players or just the specified player, if provided.
-
-Effect List:
-
-SMOKE, STEP_SOUND, POTION_BREAK, ENDER_SIGNAL, MOBSPAWNER_FLAMES, FIREWORKS_SPARK, CRIT, MAGIC_CRIT, POTION_SWIRL, POTION_SWIRL_TRANSPARENT, SPELL, INSTANT_SPELL, WITCH_MAGIC, NOTE, PORTAL, FLYING_GLYPH, FLAME, LAVA_POP, FOOTSTEP, SPLASH, PARTICLE_SMOKE, EXPLOSION_HUGE, EXPLOSION_LARGE, EXPLOSION, VOID_FOG, SMALL_SMOKE, CLOUD, COLOURED_DUST, SNOWBALL_BREAK, WATERDRIP, LAVADRIP, SNOW_SHOVEL, SLIME, HEART, VILLAGER_THUNDERCLOUD, HAPPY_VILLAGER, LARGE_SMOKE, ITEM_BREAK, TILE_BREAK, TILE_DUST
-
-The optional effectArray may contain one or more of the following indexes:<br/>
-(Note: not all options will modify all the above effects)
-
-**int 'id':** the item/block/data id for the effect<br/>
-**int 'data':** the data value of the block/item for the effect (requires a valid data value for 1.8)<br/>
-**float 'offsetX':** the starting random offset in the X axis<br/>
-**float 'offsetY':** the starting random offset in the Y axis<br/>
-**float 'offsetZ':** the starting random offset in the Z axis<br/>
-**float 'speed':** the speed of the particles<br/>
-**int 'particleCount':** the number of particles<br/>
-**int 'radius':** the radius in which the particle(s) can be seen
-
-Example:
-```play_effect(pcursor(), PARTICLE_SMOKE, array(particleCount: 10))```
-
 ## Event Documentation
 
 ### item_damage
@@ -74,7 +39,7 @@ This event is called when a player's item (like a tool) will take damage. Cancel
 #### Prefilters
 
 * **player:** [String Match][1]
-* **item:** [Item Match][2]
+* **itemname:** [String Match][2]
 
 #### Event Data
 

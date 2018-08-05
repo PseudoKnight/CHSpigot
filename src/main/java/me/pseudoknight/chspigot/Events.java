@@ -3,6 +3,7 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.CHLog;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
@@ -42,7 +43,7 @@ public class Events {
 
 		@Override
 		public String docs() {
-			return "{player: <string match> | item: <item match>} "
+			return "{player: <string match> | itemname: <string match>} "
 					+ "This event is called when a player's item (like a tool) will take damage. "
 					+ "Cancelling this event will prevent damage from being taken on items."
 					+ "{player: The player | item: An item array of the item being damaged |"
@@ -67,11 +68,20 @@ public class Events {
 		}
 
 		@Override
+		public void bind(BoundEvent event) {
+			Map<String, Construct> prefilters = event.getPrefilter();
+			if(prefilters.containsKey("item")) {
+				CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The \"item\" prefilter here is no longer supported."
+						+ " Use \"itemname\" instead.", event.getTarget());
+			}
+		}
+
+		@Override
 		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCPlayerItemDamageEvent) {
 				MCPlayerItemDamageEvent event = (MCPlayerItemDamageEvent)e;
 
-				Prefilters.match(prefilter, "item", Static.ParseItemNotation(event.getItem()), Prefilters.PrefilterType.ITEM_MATCH);
+				Prefilters.match(prefilter, "itemname", event.getItem().getType().getName(), Prefilters.PrefilterType.STRING_MATCH);
 				Prefilters.match(prefilter, "player", event.getPlayer().getName(), Prefilters.PrefilterType.MACRO);
 
 				return true;

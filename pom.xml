@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.pseudoknight</groupId>
     <artifactId>chspigot</artifactId>
-    <version>1.6.0</version>
+    <version>2.0.0</version>
     <name>CHSpigot</name>
     <description>Gives access to methods available in Spigot but not Bukkit</description>
     
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>commandhelper</artifactId>
-            <version>3.3.2-SNAPSHOT</version>
+            <version>3.3.3-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>bukkit</artifactId>
@@ -132,7 +132,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <version>1.13-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
