@@ -3,6 +3,8 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.abstraction.MCWorld;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHLog;
@@ -23,6 +25,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREBadEntityException;
 import com.laytonsmith.core.exceptions.CRE.CRECastException;
 import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidWorldException;
 import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigCompileException;
@@ -172,7 +175,7 @@ public class Functions {
 		}
 
 		public Class<? extends CREThrowable>[] thrown() {
-			return new Class[]{CREFormatException.class, CRECastException.class};
+			return new Class[]{CREFormatException.class, CRECastException.class, CREInvalidWorldException.class};
 		}
 
 		public boolean isRestricted() {
@@ -231,6 +234,7 @@ public class Functions {
 				float offsetZ = 0;
 				float speed = 1;
 				int particleCount = 1;
+				int radius = 0;
 				if(options.containsKey("offsetX")){
 					offsetX = Static.getDouble32(options.get("offsetX", t), t);
 				}
@@ -246,9 +250,25 @@ public class Functions {
 				if(options.containsKey("particleCount")){
 					particleCount = Static.getInt32(options.get("particleCount", t), t);
 				}
+				if(options.containsKey("radius")) {
+					radius = Static.getInt32(options.get("radius", t), t);
+				}
+				if(options.containsKey("id") || options.containsKey("data")) {
+					CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "Particle id and data is deprecated in play_effect()."
+							+ " Consider using spawn_particle().", t);
+				}
 
 				if(p == null) {
-					w.spawnParticle(particle, loc, particleCount, offsetX, offsetY, offsetZ, speed);
+					if(radius > 0) {
+						World world = loc.getWorld();
+						for(Player player : world.getPlayers()) {
+							if(player.isOnline() && player.getLocation().distance(loc) < radius) {
+								player.spawnParticle(particle, loc, particleCount, offsetX, offsetY, offsetZ, speed);
+							}
+						}
+					} else {
+						w.spawnParticle(particle, loc, particleCount, offsetX, offsetY, offsetZ, speed);
+					}
 				} else {
 					p.spawnParticle(particle, loc, particleCount, offsetX, offsetY, offsetZ, speed);
 				}
@@ -284,7 +304,23 @@ public class Functions {
 
 		@Override
 		public ParseTree optimizeDynamic(Target t, List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
-			CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "play_effect() is deprecated and keys \"id\", \"data\", and \"radius\" no longer work.", t);
+			if(children.size() < 2) {
+				return null;
+			}
+			Construct c = null;
+			if(children.get(1).getData() instanceof CString) {
+				c = children.get(1).getData();
+			} else if(children.get(2).getData() instanceof CString) {
+				c = children.get(2).getData();
+			}
+			if(c != null) {
+				try {
+					OldEffect e = OldEffect.valueOf(c.val().toUpperCase());
+					CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The particle " + c.val() + " is deprecated for " + e.getParticle().name(), t);
+				} catch(IllegalArgumentException ex) {
+					// not deprecated
+				}
+			}
 			return null;
 		}
 
