@@ -3,7 +3,6 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.MCMaterialData;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHLog;
