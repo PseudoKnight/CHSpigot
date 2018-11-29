@@ -38,8 +38,8 @@ This event is called when a player's item (like a tool) will take damage. Cancel
 
 #### Prefilters
 
-* **player:** [String Match][1]
-* **itemname:** [String Match][2]
+* **player:** String Match
+* **itemname:** String Match
 
 #### Event Data
 
@@ -57,8 +57,8 @@ This event is called when an entity mounts another entity.
 
 #### Prefilters
 
-* **type:** [Macro Match][3]
-* **mounttype:** [Macro Match][3]
+* **type:** Macro Match
+* **mounttype:** Macro Match
 
 #### Event Data
 
@@ -73,8 +73,8 @@ This event is called when an entity dismounts another entity. This event cannot 
 
 #### Prefilters
 
-* **type:** [Macro Match][3]
-* **mounttype:** [Macro Match][3]
+* **type:** Macro Match
+* **mounttype:** Macro Match
 
 #### Event Data
 
@@ -89,7 +89,7 @@ This event is called when a spawner spawns an entity.
 
 #### Prefilters
 
-* **type:** [String Match][1]
+* **type:** String Match
 
 #### Event Data
 
@@ -97,8 +97,3 @@ This event is called when a spawner spawns an entity.
 * **id:** The UUID of the spawning entity
 * **location:** The location the entity spawned
 * **spawner:** The location of the spawner that spawned the entity
-
-
-[1]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#String_Match
-[2]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Item_Match
-[3]: http://wiki.sk89q.com/wiki/CommandHelper/Events/Prefilters#Macro_Match

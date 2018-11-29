@@ -3,12 +3,10 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.MCPlayer;
-import com.laytonsmith.abstraction.MCWorld;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHLog;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Optimizable;
 import com.laytonsmith.core.ParseTree;
@@ -18,7 +16,6 @@ import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CDouble;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
@@ -31,6 +28,7 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigCompileException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -65,7 +63,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCEntity ent = Static.getEntity(args[0], t);
 			if(ent instanceof MCArrow) {
 				return new CDouble(((Arrow) ent.getHandle()).spigot().getDamage(), t);
@@ -87,7 +85,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 	}
@@ -107,7 +105,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCEntity ent = Static.getEntity(args[0], t);
 			if(ent instanceof MCArrow) {
 				((Arrow) ent.getHandle()).spigot().setDamage(Static.getDouble(args[1], t));
@@ -130,7 +128,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 	}
@@ -156,7 +154,6 @@ public class Functions {
 			SNOWBALL_BREAK(Particle.SNOWBALL),
 			WATERDRIP(Particle.DRIP_WATER),
 			LAVADRIP(Particle.DRIP_LAVA),
-			SNOW_SHOVEL(Particle.SNOW_SHOVEL),
 			VILLAGER_THUNDERCLOUD(Particle.VILLAGER_ANGRY),
 			HAPPY_VILLAGER(Particle.VILLAGER_HAPPY),
 			LARGE_SMOKE(Particle.SMOKE_LARGE),
@@ -186,7 +183,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct  exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed  exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCLocation l;
 			Particle particle;
 			CArray options = null;
@@ -299,7 +296,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 		@Override
@@ -307,7 +304,7 @@ public class Functions {
 			if(children.size() < 2) {
 				return null;
 			}
-			Construct c = null;
+			Mixed c = null;
 			if(children.get(1).getData() instanceof CString) {
 				c = children.get(1).getData();
 			} else if(children.get(2).getData() instanceof CString) {
@@ -346,7 +343,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			Player.Spigot p;
 			if(args.length == 0) {
 				p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
@@ -370,7 +367,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 	}
@@ -390,7 +387,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			Player p;
 			if(args.length == 0) {
 				p = (Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle();
@@ -413,7 +410,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 	}
@@ -433,7 +430,7 @@ public class Functions {
 			return false;
 		}
 
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			Player.Spigot p;
 			if(args.length == 0) {
 				p = ((Player) environment.getEnv(CommandHelperEnvironment.class).GetPlayer().getHandle()).spigot();
@@ -461,7 +458,7 @@ public class Functions {
 		}
 
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 	}

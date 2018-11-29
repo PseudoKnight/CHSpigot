@@ -1,6 +1,5 @@
 package me.pseudoknight.chspigot.abstraction.spigot;
 
-import com.laytonsmith.abstraction.MCCreatureSpawner;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;

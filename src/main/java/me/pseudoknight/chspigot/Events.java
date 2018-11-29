@@ -4,13 +4,12 @@ import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.CHLog;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CString;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.events.AbstractEvent;
@@ -20,6 +19,7 @@ import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.Prefilters;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 import me.pseudoknight.chspigot.abstraction.MCEntityDismountEvent;
 import me.pseudoknight.chspigot.abstraction.MCEntityMountEvent;
 import me.pseudoknight.chspigot.abstraction.MCPlayerItemDamageEvent;
@@ -64,12 +64,12 @@ public class Events {
 
 		@Override
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 		@Override
 		public void bind(BoundEvent event) {
-			Map<String, Construct> prefilters = event.getPrefilter();
+			Map<String, Mixed> prefilters = event.getPrefilter();
 			if(prefilters.containsKey("item")) {
 				CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The \"item\" prefilter here is no longer supported."
 						+ " Use \"itemname\" instead.", event.getTarget());
@@ -77,7 +77,7 @@ public class Events {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCPlayerItemDamageEvent) {
 				MCPlayerItemDamageEvent event = (MCPlayerItemDamageEvent)e;
 
@@ -91,10 +91,10 @@ public class Events {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent e) throws EventException {
 			if (e instanceof MCPlayerItemDamageEvent) {
 				MCPlayerItemDamageEvent event = (MCPlayerItemDamageEvent) e;
-				Map<String, Construct> map = evaluate_helper(e);
+				Map<String, Mixed> map = evaluate_helper(e);
 
 				map.put("player", new CString(event.getPlayer().getName(), Target.UNKNOWN));
 				map.put("item", ObjectGenerator.GetGenerator().item(event.getItem(), Target.UNKNOWN));
@@ -106,7 +106,7 @@ public class Events {
 		}
 
 		@Override
-		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
+		public boolean modifyEvent(String key, Mixed value, BindableEvent e) {
 			MCPlayerItemDamageEvent event = (MCPlayerItemDamageEvent)e;
 
 			if (key.equalsIgnoreCase("damage") && value instanceof CInt) {
@@ -157,11 +157,11 @@ public class Events {
 
 		@Override
 		public Version since() {
-			return CHVersion.V3_3_2;
+			return MSVersion.V3_3_2;
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCEntityMountEvent) {
 				MCEntityMountEvent event = (MCEntityMountEvent)e;
 
@@ -175,10 +175,10 @@ public class Events {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent e) throws EventException {
 			if (e instanceof MCEntityMountEvent) {
 				MCEntityMountEvent event = (MCEntityMountEvent) e;
-				Map<String, Construct> map = new HashMap<>();
+				Map<String, Mixed> map = new HashMap<>();
 
 				map.put("type", new CString(event.getEntity().getType().name(), Target.UNKNOWN));
 				map.put("id", new CString(event.getEntity().getUniqueId().toString(), Target.UNKNOWN));
@@ -191,7 +191,7 @@ public class Events {
 		}
 
 		@Override
-		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
+		public boolean modifyEvent(String key, Mixed value, BindableEvent e) {
 			return false;
 		}
 	}
@@ -226,11 +226,11 @@ public class Events {
 
 		@Override
 		public Version since() {
-			return CHVersion.V3_3_2;
+			return MSVersion.V3_3_2;
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCEntityDismountEvent) {
 				MCEntityDismountEvent event = (MCEntityDismountEvent)e;
 
@@ -244,10 +244,10 @@ public class Events {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent e) throws EventException {
 			if (e instanceof MCEntityDismountEvent) {
 				MCEntityDismountEvent event = (MCEntityDismountEvent) e;
-				Map<String, Construct> map = new HashMap<>();
+				Map<String, Mixed> map = new HashMap<>();
 
 				map.put("type", new CString(event.getEntity().getType().name(), Target.UNKNOWN));
 				map.put("id", new CString(event.getEntity().getUniqueId().toString(), Target.UNKNOWN));
@@ -260,7 +260,7 @@ public class Events {
 		}
 
 		@Override
-		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
+		public boolean modifyEvent(String key, Mixed value, BindableEvent e) {
 			return false;
 		}
 	}
@@ -285,7 +285,7 @@ public class Events {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCSpawnerSpawnEvent) {
 				MCSpawnerSpawnEvent event = (MCSpawnerSpawnEvent)e;
 				if(prefilter.containsKey("type")) {
@@ -299,10 +299,10 @@ public class Events {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent e) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent e) throws EventException {
 			if (e instanceof MCSpawnerSpawnEvent) {
 				MCSpawnerSpawnEvent event = (MCSpawnerSpawnEvent) e;
-				Map<String, Construct> map = new HashMap<>();
+				Map<String, Mixed> map = new HashMap<>();
 				Target t = Target.UNKNOWN;
 
 				map.put("type", new CString(event.getEntity().getType().name(),t));
@@ -327,11 +327,11 @@ public class Events {
 
 		@Override
 		public Version since() {
-			return CHVersion.V3_3_2;
+			return MSVersion.V3_3_2;
 		}
 
 		@Override
-		public boolean modifyEvent(String key, Construct value, BindableEvent e) {
+		public boolean modifyEvent(String key, Mixed value, BindableEvent e) {
 			return false;
 		}
 
