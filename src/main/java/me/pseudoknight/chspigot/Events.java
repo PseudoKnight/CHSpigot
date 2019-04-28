@@ -3,7 +3,7 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHLog;
+import com.laytonsmith.core.MSLog;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
@@ -71,7 +71,7 @@ public class Events {
 		public void bind(BoundEvent event) {
 			Map<String, Mixed> prefilters = event.getPrefilter();
 			if(prefilters.containsKey("item")) {
-				CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The \"item\" prefilter here is no longer supported."
+				MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The \"item\" prefilter here is no longer supported."
 						+ " Use \"itemname\" instead.", event.getTarget());
 			}
 		}

@@ -5,7 +5,7 @@ import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHLog;
+import com.laytonsmith.core.MSLog;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Optimizable;
@@ -197,7 +197,7 @@ public class Functions {
 					try {
 						particle = OldEffect.valueOf(args[1].val().toUpperCase()).getParticle();
 					} catch(IllegalArgumentException ex2) {
-						CHLog.GetLogger().e(CHLog.Tags.GENERAL, "Invalid particle: " + args[1].val(), t);
+						MSLog.GetLogger().e(MSLog.Tags.GENERAL, "Invalid particle: " + args[1].val(), t);
 						return CVoid.VOID;
 					}
 				}
@@ -213,7 +213,7 @@ public class Functions {
 					try {
 						particle = OldEffect.valueOf(args[2].val().toUpperCase()).getParticle();
 					} catch(IllegalArgumentException ex2) {
-						CHLog.GetLogger().e(CHLog.Tags.GENERAL, "Invalid particle: " + args[2].val(), t);
+						MSLog.GetLogger().e(MSLog.Tags.GENERAL, "Invalid particle: " + args[2].val(), t);
 						return CVoid.VOID;
 					}
 				}
@@ -251,7 +251,7 @@ public class Functions {
 					radius = Static.getInt32(options.get("radius", t), t);
 				}
 				if(options.containsKey("id") || options.containsKey("data")) {
-					CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "Particle id and data is deprecated in play_effect()."
+					MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "Particle id and data is deprecated in play_effect()."
 							+ " Consider using spawn_particle().", t);
 				}
 
@@ -300,7 +300,9 @@ public class Functions {
 		}
 
 		@Override
-		public ParseTree optimizeDynamic(Target t, List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
+		public ParseTree optimizeDynamic(Target t, Environment env, List<ParseTree> children, FileOptions fileOptions) 
+				throws ConfigCompileException, ConfigRuntimeException {
+
 			if(children.size() < 2) {
 				return null;
 			}
@@ -313,7 +315,7 @@ public class Functions {
 			if(c != null) {
 				try {
 					OldEffect e = OldEffect.valueOf(c.val().toUpperCase());
-					CHLog.GetLogger().w(CHLog.Tags.DEPRECATION, "The particle " + c.val() + " is deprecated for " + e.getParticle().name(), t);
+					MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The particle " + c.val() + " is deprecated for " + e.getParticle().name(), t);
 				} catch(IllegalArgumentException ex) {
 					// not deprecated
 				}
