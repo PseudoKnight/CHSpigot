@@ -290,7 +290,7 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "void {[player], locationArray, particle, [particleArray]} Plays the specified particle effect to any"
+			return "void {[player], locationArray, particle, [particleArray]} (deprecated) Plays the specified particle effect to any"
 					+ " nearby players or specified player. Particle array may contain one or more of the following indexes: "
 					+ "float offsetX, float offsetY, float offsetZ, float speed, int particleCount";
 		}
@@ -302,24 +302,7 @@ public class Functions {
 		@Override
 		public ParseTree optimizeDynamic(Target t, Environment env, List<ParseTree> children, FileOptions fileOptions) 
 				throws ConfigCompileException, ConfigRuntimeException {
-
-			if(children.size() < 2) {
-				return null;
-			}
-			Mixed c = null;
-			if(children.get(1).getData() instanceof CString) {
-				c = children.get(1).getData();
-			} else if(children.get(2).getData() instanceof CString) {
-				c = children.get(2).getData();
-			}
-			if(c != null) {
-				try {
-					OldEffect e = OldEffect.valueOf(c.val().toUpperCase());
-					MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The particle " + c.val() + " is deprecated for " + e.getParticle().name(), t);
-				} catch(IllegalArgumentException ex) {
-					// not deprecated
-				}
-			}
+			MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "play_effect() in CHSpigot is deprecated for spawn_particle() in CH", t);
 			return null;
 		}
 
