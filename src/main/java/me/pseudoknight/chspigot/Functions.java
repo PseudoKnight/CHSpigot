@@ -300,8 +300,8 @@ public class Functions {
 		}
 
 		@Override
-		public ParseTree optimizeDynamic(Target t, Environment env, List<ParseTree> children, FileOptions fileOptions) 
-				throws ConfigCompileException, ConfigRuntimeException {
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
 			MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "play_effect() in CHSpigot is deprecated for spawn_particle() in CH", t);
 			return null;
 		}
