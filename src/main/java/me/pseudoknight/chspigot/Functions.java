@@ -5,12 +5,7 @@ import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.entities.MCArrow;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.MSLog;
-import com.laytonsmith.core.MSVersion;
-import com.laytonsmith.core.ObjectGenerator;
-import com.laytonsmith.core.Optimizable;
-import com.laytonsmith.core.ParseTree;
-import com.laytonsmith.core.Static;
+import com.laytonsmith.core.*;
 import com.laytonsmith.core.compiler.FileOptions;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CDouble;
@@ -49,7 +44,7 @@ public class Functions {
 	}
 
 	@api
-	public static class get_arrow_damage extends AbstractFunction {
+	public static class get_arrow_damage extends AbstractFunction implements Optimizable {
 
 		public Class<? extends CREThrowable>[] thrown() {
 			return new Class[]{CREBadEntityException.class, CRECastException.class};
@@ -88,10 +83,21 @@ public class Functions {
 			return MSVersion.V3_3_1;
 		}
 
+		@Override
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
+			MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "get_arrow_damage() in CHSpigot is deprecated for entity_spec() for arrows in in CH", t);
+			return null;
+		}
+
+		@Override
+		public Set<Optimizable.OptimizationOption> optimizationOptions() {
+			return EnumSet.of(Optimizable.OptimizationOption.OPTIMIZE_DYNAMIC);
+		}
 	}
 
 	@api
-	public static class set_arrow_damage extends AbstractFunction {
+	public static class set_arrow_damage extends AbstractFunction implements Optimizable {
 
 		public Class<? extends CREThrowable>[] thrown() {
 			return new Class[]{CREBadEntityException.class, CRECastException.class};
@@ -129,6 +135,18 @@ public class Functions {
 
 		public Version since() {
 			return MSVersion.V3_3_1;
+		}
+
+		@Override
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions) throws ConfigCompileException, ConfigRuntimeException {
+			MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "set_arrow_damage() in CHSpigot is deprecated for set_entity_spec() for arrows in in CH", t);
+			return null;
+		}
+
+		@Override
+		public Set<Optimizable.OptimizationOption> optimizationOptions() {
+			return EnumSet.of(Optimizable.OptimizationOption.OPTIMIZE_DYNAMIC);
 		}
 
 	}

@@ -20,16 +20,6 @@ Returns the language local for a player. This always returns the default (en_US)
 
 Returns an array of players who cannot see the player.
 
-### Arrow API
-
-**get_arrow_damage(entityID)**
-
-Gets the damage for the specified arrow entityID. Returns double.
-
-**set_arrow_damage(entityID, double)**
-
-Sets the damage the specified arrow entity will do.
-
 ## Event Documentation
 
 ### item_damage
