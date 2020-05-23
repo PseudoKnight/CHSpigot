@@ -3,7 +3,6 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.MSLog;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
@@ -68,15 +67,6 @@ public class Events {
 		}
 
 		@Override
-		public void bind(BoundEvent event) {
-			Map<String, Mixed> prefilters = event.getPrefilter();
-			if(prefilters.containsKey("item")) {
-				MSLog.GetLogger().w(MSLog.Tags.DEPRECATION, "The \"item\" prefilter here is no longer supported."
-						+ " Use \"itemname\" instead.", event.getTarget());
-			}
-		}
-
-		@Override
 		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
 			if (e instanceof MCPlayerItemDamageEvent) {
 				MCPlayerItemDamageEvent event = (MCPlayerItemDamageEvent)e;
@@ -117,14 +107,6 @@ public class Events {
 
 			return false;
 		}
-
-		@Override
-		public void cancel(BindableEvent o, boolean state) {
-			super.cancel(o, state);
-			MCPlayerItemDamageEvent e = (MCPlayerItemDamageEvent)o;
-			e.getPlayer().updateInventory();
-		}
-
 	}
 
 	@api
