@@ -1,8 +1,7 @@
 # CHSpigot
 
-Gives access to API available in Spigot but not Bukkit.
-These functions and events are more subject to changes and deprecation than typical CH functions,
-so you'll need to keep the scripts that use this updated.
+Gives access to API available in Spigot but not Bukkit. As CommandHelper now depends on Spigot,
+these functions and events are subject to be moved into CommandHelper at some point.
 
 ## Function Documentation
 
