@@ -3,6 +3,9 @@ package me.pseudoknight.chspigot;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.*;
+import com.laytonsmith.core.compiler.CompilerEnvironment;
+import com.laytonsmith.core.compiler.CompilerWarning;
+import com.laytonsmith.core.compiler.FileOptions;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
@@ -11,11 +14,14 @@ import com.laytonsmith.core.environments.CommandHelperEnvironment;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
+import com.laytonsmith.core.exceptions.ConfigCompileException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.natives.interfaces.Mixed;
 import org.bukkit.entity.Player;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,7 +78,7 @@ public class Functions {
 	}
 
 	@api
-	public static class player_locale extends AbstractFunction {
+	public static class player_locale extends AbstractFunction implements Optimizable {
 
 		public Class<? extends CREThrowable>[] thrown() {
 			return new Class[]{CREPlayerOfflineException.class};
@@ -105,13 +111,26 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "string {[player]} Gets the player's locale language.";
+			return "string {[player]} Gets the player's locale language. Deprecated for plocale().";
 		}
 
 		public Version since() {
 			return MSVersion.V3_3_1;
 		}
 
+		@Override
+		public Set<OptimizationOption> optimizationOptions() {
+			return EnumSet.of(OptimizationOption.OPTIMIZE_DYNAMIC);
+		}
+
+		@Override
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions)
+				throws ConfigCompileException, ConfigRuntimeException {
+			env.getEnv(CompilerEnvironment.class).addCompilerWarning(fileOptions, new CompilerWarning(
+					"player_locale() is deprecated for plocale().", t, null));
+			return null;
+		}
 	}
 
 	@api

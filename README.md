@@ -11,10 +11,6 @@ these functions and events are subject to be moved into CommandHelper at some po
 
 If the player is dead, it will respawn them.
 
-**player_locale([player])**
-
-Returns the language local for a player. This always returns the default (en_US) on player_join. After the player has joined this should reflect their client setting.
-
 **get_hidden_players([player])**
 
 Returns an array of players who cannot see the player.
