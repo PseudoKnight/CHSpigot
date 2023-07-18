@@ -5,7 +5,7 @@ these functions and events are subject to be moved into CommandHelper at some po
 
 ## Compatibility
 
-* [**CHSpigot 2.0.6 for Spigot 1.16.5 - 1.20.1**](https://letsbuild.net/jenkins/job/CHSpigot/33/artifact/target/chspigot-2.0.6.jar) (CommandHelper 3.3.5 #332 or later) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/master/README.md)
+* [**CHSpigot 2.0.6 for Spigot 1.16.5 - 1.20.1**](https://letsbuild.net/jenkins/job/CHSpigot/35/artifact/target/chspigot-2.0.6.jar) (CommandHelper 3.3.5 #332 or later) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/master/README.md)
 * [**CHSpigot 2.0.4 for Spigot 1.13.2 - 1.18.2**](https://letsbuild.net/jenkins/job/CHSpigot/29/artifact/target/chspigot-2.0.4.jar) (CommandHelper 3.3.4 #3766 - 3.3.5 #255) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/v2.0.4/README.md)
 * [**CHSpigot 1.6.0a for Spigot 1.12.2**](https://github.com/PseudoKnight/CHSpigot/releases/download/v1.6.0a/chspigot-1.6.0.jar) (CommandHelper 3.3.2) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/v1.6.0a/README.md)
 
