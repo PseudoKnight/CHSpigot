@@ -34,7 +34,7 @@ public class Functions {
 	}
 
 	@api
-	public static class respawn extends AbstractFunction {
+	public static class respawn extends AbstractFunction implements Optimizable {
 
 		public Class<? extends CREThrowable>[] thrown() {
 			return new Class[]{CREPlayerOfflineException.class};
@@ -68,13 +68,26 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "void {[player]} Respawns the player immediately.";
+			return "void {[player]} Respawns the player immediately. Deprecated for pforce_respawn() in CommandHelper.";
 		}
 
 		public Version since() {
 			return MSVersion.V3_3_1;
 		}
 
+		@Override
+		public Set<OptimizationOption> optimizationOptions() {
+			return EnumSet.of(OptimizationOption.OPTIMIZE_DYNAMIC);
+		}
+
+		@Override
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions)
+				throws ConfigCompileException, ConfigRuntimeException {
+			env.getEnv(CompilerEnvironment.class).addCompilerWarning(fileOptions, new CompilerWarning(
+					"respawn() is deprecated for pforce_respawn() in CommandHelper.", t, null));
+			return null;
+		}
 	}
 
 	@api
@@ -111,7 +124,7 @@ public class Functions {
 		}
 
 		public String docs() {
-			return "string {[player]} Gets the player's locale language. Deprecated for plocale().";
+			return "string {[player]} Gets the player's locale language. Deprecated for plocale() in CommandHelper.";
 		}
 
 		public Version since() {
@@ -128,7 +141,7 @@ public class Functions {
 				List<ParseTree> children, FileOptions fileOptions)
 				throws ConfigCompileException, ConfigRuntimeException {
 			env.getEnv(CompilerEnvironment.class).addCompilerWarning(fileOptions, new CompilerWarning(
-					"player_locale() is deprecated for plocale().", t, null));
+					"player_locale() is deprecated for plocale() in CommandHelper", t, null));
 			return null;
 		}
 	}

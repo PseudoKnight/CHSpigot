@@ -15,7 +15,7 @@ import java.util.logging.Level;
 @MSExtension("CHSpigot")
 public class Extension extends AbstractExtension {
 
-	private final SimpleVersion VERSION = new SimpleVersion(2,0,7);
+	private final SimpleVersion VERSION = new SimpleVersion(2,0,8);
 
 	@Override
 	public Version getVersion() {
