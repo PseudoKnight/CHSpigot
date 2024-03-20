@@ -5,7 +5,7 @@ these functions and events are subject to be moved into CommandHelper at some po
 
 ## Recommended Builds
 
-* [**CHSpigot 2.0.8 for Spigot 1.16.5 - 1.20.4**](https://github.com/PseudoKnight/CHSpigot/releases/tag/v2.0.8) (CommandHelper 3.3.5 #332 or later) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/master/README.md)
+* [**CHSpigot 2.0.8 for Spigot 1.16.5 - 1.20.4**](https://github.com/PseudoKnight/CHSpigot/releases/tag/v2.0.8) (CommandHelper 3.3.5 #392 or later) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/master/README.md)
 * [**CHSpigot 2.0.4 for Spigot 1.13.2 - 1.16.5**](https://github.com/PseudoKnight/CHSpigot/releases/tag/v2.0.4) (CommandHelper 3.3.4) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/v2.0.4/README.md)
 * [**CHSpigot 1.6.0a for Spigot 1.12.2**](https://github.com/PseudoKnight/CHSpigot/releases/tag/v1.6.0a) (CommandHelper 3.3.2) [Documentation](https://github.com/PseudoKnight/CHSpigot/blob/v1.6.0a/README.md)
 
