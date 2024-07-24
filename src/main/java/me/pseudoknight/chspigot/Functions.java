@@ -147,7 +147,7 @@ public class Functions {
 	}
 
 	@api
-	public static class get_hidden_players extends AbstractFunction {
+	public static class get_hidden_players extends AbstractFunction implements Optimizable {
 
 		public Class<? extends CREThrowable>[] thrown() {
 			return new Class[]{CREPlayerOfflineException.class};
@@ -192,6 +192,19 @@ public class Functions {
 			return MSVersion.V3_3_1;
 		}
 
+		@Override
+		public Set<OptimizationOption> optimizationOptions() {
+			return EnumSet.of(OptimizationOption.OPTIMIZE_DYNAMIC);
+		}
+
+		@Override
+		public ParseTree optimizeDynamic(Target t, Environment env, Set<Class<? extends Environment.EnvironmentImpl>> envs,
+				List<ParseTree> children, FileOptions fileOptions)
+				throws ConfigCompileException, ConfigRuntimeException {
+			env.getEnv(CompilerEnvironment.class).addCompilerWarning(fileOptions, new CompilerWarning(
+					"get_hidden_players() is deprecated. Loop over players with raw_pcan_see().", t, null));
+			return null;
+		}
 	}
 
 }
